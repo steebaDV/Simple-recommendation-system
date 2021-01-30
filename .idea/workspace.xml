@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1e7ead1e-28ce-4d8f-8d2f-35165f8ab15f" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../bot/mybot/hello.js.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,7 +18,7 @@
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1nnNofTnIZLNj4RcJEYW8wdYZaQ" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -36,6 +37,11 @@
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
   </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\User\AppData\Local\Programs\Python\Python37-32\Test_Heroku" />
+    </key>
+  </component>
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -47,7 +53,7 @@
       <option name="presentableId" value="Default" />
       <updated>1612022070536</updated>
       <workItem from="1612022206698" duration="400000" />
-      <workItem from="1612023642846" duration="317000" />
+      <workItem from="1612023642846" duration="764000" />
     </task>
     <servers />
   </component>
