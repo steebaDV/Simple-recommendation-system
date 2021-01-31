@@ -39,7 +39,7 @@
       <recent name="C:\Users\User\AppData\Local\Programs\Python\Python37-32\Test_Heroku" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Python.app">
     <configuration name="app" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="Test_Heroku" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -62,9 +62,55 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="ex" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="Test_Heroku" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/ex.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="students" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="Test_Heroku" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/students.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Python.app" />
+        <item itemvalue="Python.ex" />
+        <item itemvalue="Python.students" />
       </list>
     </recent_temporary>
   </component>
@@ -79,7 +125,7 @@
       <option name="presentableId" value="Default" />
       <updated>1612022070536</updated>
       <workItem from="1612022206698" duration="400000" />
-      <workItem from="1612023642846" duration="6319000" />
+      <workItem from="1612023642846" duration="39946000" />
     </task>
     <servers />
   </component>
@@ -87,32 +133,34 @@
     <option name="version" value="2" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="532" y="214" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1612022372268">
+    <state x="532" y="214" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1612115601647">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="532" y="214" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1536.824@0.0.1536.824" timestamp="1612022372268" />
+    <state x="532" y="214" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1536.824@0.0.1536.824" timestamp="1612115601647" />
     <state x="549" y="167" key="FileChooserDialogImpl" timestamp="1612024525544">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="549" y="167" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1612024525544" />
-    <state width="1493" height="210" key="GridCell.Tab.0.bottom" timestamp="1612027375914">
+    <state width="1493" height="396" key="GridCell.Tab.0.bottom" timestamp="1612121604522">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="210" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1612027375914" />
-    <state width="1493" height="210" key="GridCell.Tab.0.center" timestamp="1612027375914">
+    <state width="1493" height="396" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1612121604522" />
+    <state width="1493" height="396" key="GridCell.Tab.0.center" timestamp="1612121604522">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="210" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1612027375914" />
-    <state width="1493" height="210" key="GridCell.Tab.0.left" timestamp="1612027375913">
+    <state width="1493" height="396" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1612121604522" />
+    <state width="1493" height="396" key="GridCell.Tab.0.left" timestamp="1612121604521">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="210" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1612027375913" />
-    <state width="1493" height="210" key="GridCell.Tab.0.right" timestamp="1612027375914">
+    <state width="1493" height="396" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1612121604521" />
+    <state width="1493" height="396" key="GridCell.Tab.0.right" timestamp="1612121604522">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="210" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1612027375914" />
+    <state width="1493" height="396" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1612121604522" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/Test_Heroku$app.coverage" NAME="app Coverage Results" MODIFIED="1612026702639" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Test_Heroku$students.coverage" NAME="students Coverage Results" MODIFIED="1612092126361" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Test_Heroku$ex.coverage" NAME="ex Coverage Results" MODIFIED="1612119510527" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Test_Heroku$app.coverage" NAME="app Coverage Results" MODIFIED="1612121835388" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

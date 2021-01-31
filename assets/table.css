@@ -28,3 +28,12 @@ table tbody tr:nth-child(2n) {
 table tbody tr:hover {
     background: #ebffe8;
 }
+tr.notable{
+
+}
+td.notable{
+
+}
+tbody.notable{
+
+}

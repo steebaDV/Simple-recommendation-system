@@ -19,6 +19,7 @@ Vk = ''
 Vk_name = ''
 Group = ''
 Email = ''
+Need_team = True
 Project_types = ''
 Professions = ''
 ID_labels = ''
@@ -35,6 +36,7 @@ def debug():
     print(f'Vk_name: {Vk_name}')
     print(f'Email: {Email}')
     print(f'Group: {Group}')
+    print(f'Need_team: {Need_team}')
     print(f'Project_types: {Project_types}')
     print(f'Professions: {Professions}')
     print(f'ID_labels: {ID_labels}')
@@ -75,10 +77,10 @@ def get_top_types(professions):
     return top_types
 
 
-def get_vk_name(text, row, index):
-    if row == index:
+def get_vk_name(text, row):
+    if row == 0:
         return '(Это вы)'
-    elif len(text.split(':')) == 1 or not text.split(':')[1]:
+    elif text.split(':')[0] == text.split(':')[1] or len(text.split(':')) == 1 or not text.split(':')[1]:
         return ''
     else:
         vk_name = text.split(':')[1]
@@ -103,6 +105,44 @@ def get_top_students(data):
 
         top_list.append(int(point))
     return top_list
+
+
+def build_download_button():
+    import os
+    data = pd.read_csv("students.csv", encoding='cp1251')
+    if os.path.isfile('assets/files/students.xlsx'):
+        os.remove('assets/files/students.xlsx')
+    data.to_excel('assets/files/students.xlsx', index=False, encoding='cp1251')
+
+    button = html.Div(
+        html.Form(
+            action='/assets/files/students.xlsx',
+            method="get",
+            children=[
+                dbc.Button(
+                    type="submit",
+                    children=[
+                        "Скачать данные со студентами"
+                    ]
+                )
+            ]
+        ), style={
+            'text-align': 'center',
+            'display': 'flex',
+            'align-items': 'center',
+            'justify-content': 'center',
+            'height': '100%',
+            'width': '100%'}
+    )
+    return button
+
+
+def check_student_in_data():
+    data = pd.read_csv('students.csv', encoding='cp1251')
+    for index, row in enumerate(data.values):
+        if row[1].split(':')[0] == f'{Surname} {Name}' and row[3] == Group:
+            global Index
+            Index = index
 
 
 filter_list = [
@@ -194,8 +234,8 @@ email = dbc.FormGroup(
                   style={'fontWeight': 500}),
         dbc.Row(
             [
-                dbc.Input(id="email-input", value="", placeholder='Например: office@spbstu.ru'),
-                dbc.FormText("Принимаются данные только вашей корпоративной почты (заканчивающейся на @edu.spbstu.ru)"),
+                dbc.Input(id="email-input", value="", placeholder='Например: stebunov.dv@edu.spbstu.ru'),
+                dbc.FormText("Принимаются данные только вашей корпоративной почты"),
                 dbc.FormFeedback(
                     "Корректный ввод", valid=True
                 ),
@@ -236,6 +276,20 @@ vk_url = dbc.FormGroup(
 
     ], row=True
 )
+need_team = dbc.FormGroup(
+    [
+        dbc.Checkbox(
+            id="need_team_checkbox", className="form-check-input", checked=True
+        ),
+        dbc.Label(
+            "Ищу команду ",
+            html_for="need_team_checkbox",
+            className="form-check-label",
+            style={'fontWeight': 'Bold', 'color': 'SteelBlue'}
+        ),
+    ],
+    check=True,
+),
 anketa = dbc.Container(
     [
         html.A(id='anketa'),
@@ -254,20 +308,29 @@ anketa = dbc.Container(
                         [
                             dbc.Col(name, width=6),
                             dbc.Col(group, width=6)
-                        ], style={'height': '5rem'}
+                        ], style={'height': '6rem'}
                     ),
                     dbc.Row(
                         [
                             dbc.Col(surname, width=6),
                             dbc.Col(email, width=6),
-                        ], style={'height': '5rem'}
+                        ], style={'height': '6rem'}
                     ),
                     dbc.Row(
                         [
-                            dbc.Col(width=6),
+                            # dbc.Col(
+                            #     dbc.Row(
+                            #         [
+                            #             dbc.Col(need_team, width=4),
+                            #             dbc.Col(html.Label('login'), id='log_in', width=2),
+                            #         ]
+                            #     ), width=6),
+                            dbc.Col(
+                                html.Div(need_team, style={'text-align': 'right', 'margin-right': '4rem'}), width=6),
                             dbc.Col(vk_url, width=6)
-                        ], style={'height': '5rem'}
-                    )
+                        ], style={'height': '6rem'}
+                    ),
+                    html.Div(id='description', style={'height': '50%', 'width': '100%'})
                 ]
             ), style={'height': '37rem', 'border-radius': 15}
         ),
@@ -296,7 +359,7 @@ anketa = dbc.Container(
 
 id_input = dbc.FormGroup(
     [
-        dbc.Label("Введите ID", html_for='id-input', style={'fontWeight': 500}),
+        dbc.Label("Введите ID понравившихся проектов", html_for='id-input', style={'fontWeight': 500}),
         dbc.Label(
             id='id-label', html_for='id-input', style={
                 'color': 'SteelBlue',
@@ -333,10 +396,83 @@ test = dbc.Container(
         dbc.Card(
             dbc.CardBody(
                 [
+                    # html.Div(
+                    #     dbc.Table(
+                    #         html.Table(className='notable', style={'width': '100%', 'height': '80%'}, children=
+                    #         html.Tbody(
+                    #             [
+                    #                 html.Tr(
+                    #                     [
+                    #                         html.Td(
+                    #                             html.H6(
+                    #                                 'Выберите компетенции, в которых вы разбираетесть и/или хотели бы видеть в своей команде:',
+                    #                                 style={'color': 'SteelBlue', 'fontWeight': 'bold',
+                    #                                        'margin-bottom': '1rem'}
+                    #                             ),
+                    #                             colSpan=3
+                    #                         )
+                    #                     ], style={'height': '1rem'}
+                    #                 ),
+                    #                 html.Tr(
+                    #                     [
+                    #                         html.Td(
+                    #                             dcc.Checklist(
+                    #                                 id='checkboxes',
+                    #                                 options=[
+                    #                                     {'label': f' {get_filter_label(filter)}', 'value': filter} for
+                    #                                     filter in
+                    #                                     filter_list
+                    #                                 ],
+                    #                                 value=[],
+                    #                                 labelStyle={
+                    #                                     'display': 'block',
+                    #                                     'font-size': 10,
+                    #                                     'text-align': 'left',
+                    #                                     'fontWeight': 500
+                    #                                 },
+                    #
+                    #                             ),
+                    #                             rowSpan=2),
+                    #                         html.Td(
+                    #                             html.Div(id='test_table',
+                    #                                      style={
+                    #                                          'width': '100%',
+                    #                                          'height': '100%',
+                    #                                          'overflow': 'auto',
+                    #                                          'margin-bottom': '.5rem',
+                    #                                          # 'border': '3px solid green',
+                    #                                      }
+                    #                                      ), colSpan=2
+                    #                         ),
+                    #                     ], style={'height': '60%'}
+                    #                 ),
+                    #                 html.Tr(
+                    #                     [
+                    #                         html.Td(
+                    #                             html.H4(id='top_types_title',
+                    #                                     style={'fontWeight': 'bold',
+                    #                                            'text-align': 'left'}
+                    #                                     )
+                    #                         ),
+                    #                         html.Td(
+                    #                             html.H6(id='top_types',
+                    #                                     style={'color': 'SteelBlue',
+                    #                                            'text-align': 'left'}
+                    #                                     )
+                    #                         ),
+                    #                     ], style={'height': '15%', 'top': '0.5rem'}
+                    #                 ),
+                    #
+                    #             ]
+                    #         ),
+                    #                    ), bordered=True
+                    #     ), style={'height': '70%', 'width': '100%'}
+                    # )
+
                     dbc.Row(
                         dbc.Col(
                             html.H6(
-                                'Выберите компетенции, в которых вы разбираетесть и/или хотели бы видеть в своей команде:',
+                                'Выберите области деятельности, в которых вы разбираетесть и/или хотели бы видеть в своей команде:',
                                 style={'color': 'SteelBlue', 'fontWeight': 'bold', 'margin-bottom': '1rem'}
                             ),
                         )
@@ -455,6 +591,7 @@ search = dbc.Container(
                                'left': '45%',
                                # 'type':'button',
                                },
+                        disabled=True,
                         outline=True,
                     )
                 ]
@@ -534,13 +671,33 @@ def get_group_input_is_correct(input):
         Output("email-input", 'valid'),
         Output("email-input", 'invalid'),
     ],
-    [Input('email-input', 'value')]
+    [
+        Input('email-input', 'value')
+    ]
 )
 def get_email_input_is_correct(input):
-    if input.endswith('@edu.spbstu.ru') and len(input) > len('@edu.spbstu.ru'):
-        return True, False
+    if input:
+        if input[1:].endswith('@edu.spbstu.ru'):
+            return True, False
+        else:
+            return False, True
     else:
         return False, False
+
+
+@app.callback(
+
+    Output("description", 'children'),
+    [
+        Input('name-input', 'value'),
+        Input('surname-input', 'value'),
+    ]
+)
+def get_description(name, surname):
+    if name == 'download' and surname == 'data':
+        return build_download_button()
+    else:
+        return None
 
 
 @app.callback(
@@ -573,10 +730,11 @@ def get_button_anketa_enabled(valid1, valid2, valid3, valid4):
         Input('group-input', 'value'),
         Input('name-input', 'value'),
         Input('surname-input', 'value'),
-        Input('email-input', 'value')
+        Input('email-input', 'value'),
+        Input('need_team_checkbox', 'checked')
     ]
 )
-def submit_input_anketa(button, vk, group, name, surname, email):
+def submit_input_anketa(button, vk, group, name, surname, email, need_team):
     global ID_labels
     changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
     if 'button_anketa' in changed_id:
@@ -587,16 +745,20 @@ def submit_input_anketa(button, vk, group, name, surname, email):
         r = requests.get(api_url)
         response_dict = r.json()
         if response_dict.get('response'):
-            global Name, Surname, Group, Email, Vk, IMG_url, Vk_name
+            global Name, Surname, Group, Email, Vk, IMG_url, Vk_name, Need_team, Index
             Name = name
             Surname = surname
             Group = group
             Email = email
             Vk = vk
+            Need_team = need_team
             IMG_url = response_dict['response'][0]['photo_50']
             vk_first_name = response_dict['response'][0]['first_name']
             vk_last_name = response_dict['response'][0]['last_name']
             Vk_name = f'{vk_last_name} {vk_first_name}'
+
+            check_student_in_data()
+
             return True, False, '#test', 'ДАЛЕЕ'
         else:
             return False, True, '#anketa', 'ПОДТВЕРДИТЬ'
@@ -694,43 +856,59 @@ def get_test_table(checkboxes):
 
     columns = ['ID', 'Тип проекта', 'Название проекта', 'Краткое описание', 'Требуемые компетенции']
 
-    df_test = df[df['Требуемые компетенции'].apply(
-        lambda x: checkboxes.issubset(x.split(', ')))][columns]
+    if checkboxes:
+        df_test = df[df['Требуемые компетенции'].apply(
+            lambda x: checkboxes.issubset(x.split(', ')))][columns]
+    else:
+        df_test = df.copy(deep=True)
     width_iter = [5, 10, 20, 50, 15]
-    children = dbc.Table(
-        [
-            html.Table(className='tableFixHead', id='test_table',
-                       style={'width': '100%', 'height': '100%', 'table-layout': 'fixed'}, children=
-                       [
-                           html.Thead(
-                               html.Tr(
-                                   [
-                                       html.Th(column, style={'width': f'{width_iter[col]}%', }) for col, column in
-                                       enumerate(columns)
-                                   ], style={'fontWeight': 'bold', 'text-align': 'center', 'height': '3rem'}
-                               )
-                           ),
-                           html.Tbody(
-                               [
+    if not df_test.empty:
+        children = dbc.Table(
+            [
+                html.Table(className='table',
+                           style={'width': '100%', 'height': '100%', 'table-layout': 'fixed'}, children=
+                           [
+                               html.Thead(
                                    html.Tr(
                                        [
-                                           html.Td(
-                                               f'{df_test.iloc[row, col]}',
-                                               style={
-                                                   'width': f'{width_iter[col]}%',
-                                                   'font-size': 16 if not col else 12,
-                                                   'text-align': 'center' if not col else 'left'
-                                               }
-                                           )
-                                           for col, column in enumerate(columns)
-                                       ]
-                                   ) for row in range(len(df_test))
-                               ]
+                                           html.Th(column, style={'width': f'{width_iter[col]}%', }) for col, column in
+                                           enumerate(columns)
+                                       ], style={'fontWeight': 'bold', 'text-align': 'center', 'height': '3rem'}
+                                   )
+                               ),
+                               html.Tbody(
+                                   [
+                                       html.Tr(
+                                           [
+                                               html.Td(
+                                                   f'{df_test.iloc[row, col]}',
+                                                   style={
+                                                       'width': f'{width_iter[col]}%',
+                                                       'font-size': 16 if not col else 12,
+                                                       'text-align': 'center' if not col else 'left'
+                                                   }
+                                               )
+                                               for col, column in enumerate(columns)
+                                           ]
+                                       ) for row in range(len(df_test))
+                                   ]
+                               )
+                           ]
                            )
-                       ]
-                       )
-        ], responsive=True, bordered=True
-    )
+            ], responsive=True, bordered=True
+        )
+    else:
+        children = html.Div(
+            html.H6(
+                'Нет подходящих проектов, укажите другой перечень областей деятельности'
+            ), style={
+                'text-align': 'center',
+                'display': 'flex',
+                'align-items': 'center',
+                'justify-content': 'center',
+                'height': '100%',
+                'width': '100%'}
+        )
     return children
 
 
@@ -745,7 +923,12 @@ def get_test_table(checkboxes):
     ]
 )
 def get_top_professions(checkboxes):
+    checkboxes = set(checkboxes)
+    length = 0
     if checkboxes:
+        length = len(df[df['Требуемые компетенции'].apply(
+            lambda x: checkboxes.issubset(x.split(', ')))])
+    if length:
         checkboxes = set(checkboxes)
         top_types = get_top_types(checkboxes)
         if len(top_types.split(', ')) > 1:
@@ -755,6 +938,20 @@ def get_top_professions(checkboxes):
         return top_types_title, top_types
     else:
         return '', ''
+
+
+@app.callback(
+    Output('button_search', 'disabled'),
+    [
+        Input('button_anketa', 'disabled'),
+        Input('button_test', 'disabled')
+    ]
+)
+def get_button_search_enabled(button1, button2):
+    if button1 or button2:
+        return True
+    else:
+        return False
 
 
 @app.callback(
@@ -777,6 +974,7 @@ def get_search_table(button):
             'Подходящие типы проектов',
             'Список компетенций',
             'Выбранные проекты',
+            'Ищет команду',
             'Баллы совместимости'
         ]
         global Person_data, Index
@@ -790,22 +988,27 @@ def get_search_table(button):
             Email,
             Project_types,
             Professions,
-            ID_labels
+            ID_labels,
+            Need_team
         ]
-
-        if not Person_data:
+        if Index == -1:
             Person_data = person_data[:]
-
-            data = pd.read_csv('students.csv', encoding="cp1251")
 
             pd_row = pd.DataFrame(data=[Person_data], columns=columns[:-1])
-            data = pd.concat([data, pd_row], ignore_index=True)
+            pd_row.to_csv('students.csv', mode='a', index=False, encoding="cp1251", header=False)
 
-            data.to_csv('students.csv', index=False, encoding="cp1251")
-
+            data = pd.read_csv('students.csv', encoding="cp1251")
             Index = len(data) - 1
+            while not (data.iloc[Index, :-1].values == Person_data[:-1]).all():
+                data = pd.read_csv('students.csv', encoding="cp1251")
+                for index, row in enumerate(data.values):
+                    if (row == Person_data).all():
+                        Index = index
+                        break
+
         elif person_data != Person_data:
             Person_data = person_data[:]
+
             students_data = pd.read_csv('students.csv', encoding="cp1251")
             pd_row = pd.DataFrame(data=[Person_data], columns=columns[:-1])
 
@@ -814,73 +1017,88 @@ def get_search_table(button):
             data.to_csv('students.csv', index=False, encoding="cp1251")
         else:
             data = pd.read_csv('students.csv', encoding="cp1251")
-
         data['Баллы совместимости'] = get_top_students(data)
         data.sort_values(by='Баллы совместимости', ascending=False, inplace=True)
 
         index = data.index.to_list().index(Index)
+        if index:
+            data.iloc[index, :], data.iloc[0, :] = data.iloc[0, :], data.iloc[index, :]
+
+        width_iter = [5, 10, 5, 10, 10, 15, 15, 15, 5, 5, 5]
 
         table = dbc.Table(
-            html.Table(style={'width': '100%', 'height': '100%'}, children=
-            [
-                html.Thead(
-                    [
-                        html.Tr(
-                            [
-                                html.Th(column, style={'width': f'{100 / len(columns)}%', }) for column in columns
-                            ], style={'fontWeight': 'bold', 'text-align': 'center'}
-                        )
-                    ]
-                ),
-                html.Tbody(
-                    [
-                        html.Tr(
-                            [
-                                html.Td(
-                                    html.Div(
-                                        html.Img(src=data.iloc[row, 0]), style={'text-align': 'center'}
-                                    ), style={'width': f'{100 / len(columns)}%'}
+            html.Table(className='table',
+                       style={'width': '100%', 'height': '100%', 'font-size': 12}, children=
+                       [
+                           html.Thead(
+                               [
+                                   html.Tr(
+                                       [
+                                           html.Th(column, style={'width': f'{width_iter[col]}%', }) for col, column in
+                                           enumerate(columns)
+                                       ], style={'fontWeight': 'bold', 'text-align': 'center'}
+                                   )
+                               ]
+                           ),
+                           html.Tbody(
+                               [
+                                   html.Tr(
+                                       [
+                                           html.Td(
+                                               html.Div(
+                                                   html.Img(src=data.iloc[row, 0]), style={'text-align': 'center'}
+                                               ), style={'width': f'{width_iter[0]}%'}
 
-                                ),
-                                html.Td(
-                                    [
-                                        html.P(data.iloc[row, 1].split(':')[0],
-                                               style={'text-align': 'center', 'font-family': font_family}),
-                                        html.P(
-                                            get_vk_name(data.iloc[row, 1], row, index), style={
-                                                'font-style': 'italic',
-                                                'font-size': 10,
-                                                'text-align': 'center'
-                                            }
-                                        )
-                                    ],
-                                    style={'width': f'{100 / len(columns)}%'}
-                                ),
-                                html.Td(
-                                    data.iloc[row, 2], style={
-                                        'width': f'{100 / len(columns)}%', 'text-align': 'center'
-                                    }
-                                ),
-                                html.Td(
-                                    data.iloc[row, 3], style={
-                                        'width': f'{100 / len(columns)}%', 'text-align': 'center'
-                                    }
-                                ),
-                                html.Td(
-                                    html.A(data.iloc[row, 4], href=f'//{data.iloc[row, 4]}', target='_blank'),
-                                    style={'width': f'{100 / len(columns)}%'}
-                                ),
-                                html.Td(data.iloc[row, 5], style={'width': f'{100 / len(columns)}%'}),
-                                html.Td(data.iloc[row, 6], style={'width': f'{100 / len(columns)}%'}),
-                                html.Td(data.iloc[row, 7], style={'width': f'{100 / len(columns)}%'}),
-                                html.Td(data.iloc[row, 8], style={'width': f'{100 / len(columns)}%'}),
-                                html.Td(data.iloc[row, 9] if row != index else '',
-                                        style={'width': f'{100 / len(columns)}%'}),
-                            ]
-                        ) for row in range(len(data))
-                    ]
-                ),
-            ]
+                                           ),
+                                           html.Td(
+                                               [
+                                                   html.P(data.iloc[row, 1].split(':')[0],
+                                                          style={'text-align': 'center', 'font-family': font_family}),
+                                                   html.P(
+                                                       get_vk_name(data.iloc[row, 1], row), style={
+                                                           'font-style': 'italic',
+                                                           'font-size': 10,
+                                                           'text-align': 'center'
+                                                       }
+                                                   )
+                                               ],
+                                               style={'width': f'{width_iter[1]}%'}
+                                           ),
+                                           html.Td(
+                                               data.iloc[row, 2], style={
+                                                   'width': f'{width_iter[2]}%', 'text-align': 'center'
+                                               }
+                                           ),
+                                           html.Td(
+                                               data.iloc[row, 3], style={
+                                                   'width': f'{width_iter[3]}%', 'text-align': 'center'
+                                               }
+                                           ),
+                                           html.Td(
+                                               html.A(data.iloc[row, 4], href=f'//{data.iloc[row, 4]}',
+                                                      target='_blank'),
+                                               style={'width': f'{width_iter[4]}%'}
+                                           ),
+                                           html.Td(data.iloc[row, 5], style={'width': f'{width_iter[5]}%'}),
+                                           html.Td(data.iloc[row, 6], style={'width': f'{width_iter[6]}%'}),
+                                           html.Td(data.iloc[row, 7], style={'width': f'{width_iter[7]}%'}),
+                                           html.Td(data.iloc[row, 8], style={'width': f'{width_iter[8]}%'}),
+                                           html.Td('✅' if data.iloc[row, 9] else '❌',
+                                                   style={'width': f'{width_iter[9]}%', 'text-align': 'center'}),
+                                           html.Td(data.iloc[row, 10] if row else '',
+                                                   style={
+                                                       'width': f'{width_iter[10]}%',
+                                                       'text-align': 'center',
+                                                       'font-size': 16,
+                                                       'fontWeight': 500,
+                                                       'color': 'SteelBlue'
+                                                   }
+                                                   ),
+                                       ]
+                                   ) for row in range(len(data))
+                               ]
+                           ),
+                       ]
                        ), bordered=True, responsive=True
         )
         return table
