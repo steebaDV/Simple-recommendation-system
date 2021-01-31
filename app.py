@@ -195,6 +195,7 @@ email = dbc.FormGroup(
         dbc.Row(
             [
                 dbc.Input(id="email-input", value="", placeholder='Например: office@spbstu.ru'),
+                dbc.FormText("Принимаются данные только вашей корпоративной почты (заканчивающейся на @edu.spbstu.ru)"),
                 dbc.FormFeedback(
                     "Корректный ввод", valid=True
                 ),
@@ -219,6 +220,7 @@ vk_url = dbc.FormGroup(
                         dbc.InputGroupAddon("vk.com/", addon_type="prepend"),
                         dbc.Input(id="vk-input", value="",
                                   placeholder='Например: id139214004 или steeba', ),
+                        dbc.FormText("Вводите только ту часть ссылки, которая находится после vk.com/"),
                         dbc.FormFeedback(
                             "Корректный ввод", valid=True
                         ),
@@ -518,7 +520,7 @@ def get_surname_input_is_correct(input):
 )
 def get_group_input_is_correct(input):
     if input:
-        if re.fullmatch('^([0-9]{7}/9000[1-9]{1})$', input) and input[:3] in institute_dict.keys():
+        if re.fullmatch('^([0-9]{7}/[0-9]{1}000[1-9]{1})$', input) and input[:3] in institute_dict.keys():
             return True, False
         else:
             return False, True
@@ -535,11 +537,8 @@ def get_group_input_is_correct(input):
     [Input('email-input', 'value')]
 )
 def get_email_input_is_correct(input):
-    if input:
-        if re.fullmatch('^([a-zA-Z]+@[a-z]+\.[a-z]{2,3})$', input):
-            return True, False
-        else:
-            return False, True
+    if input.endswith('@edu.spbstu.ru') and len(input) > len('@edu.spbstu.ru'):
+        return True, False
     else:
         return False, False
 
@@ -875,7 +874,8 @@ def get_search_table(button):
                                 html.Td(data.iloc[row, 6], style={'width': f'{100 / len(columns)}%'}),
                                 html.Td(data.iloc[row, 7], style={'width': f'{100 / len(columns)}%'}),
                                 html.Td(data.iloc[row, 8], style={'width': f'{100 / len(columns)}%'}),
-                                html.Td(data.iloc[row, 9] if row != index else '', style={'width': f'{100 / len(columns)}%'}),
+                                html.Td(data.iloc[row, 9] if row != index else '',
+                                        style={'width': f'{100 / len(columns)}%'}),
                             ]
                         ) for row in range(len(data))
                     ]
