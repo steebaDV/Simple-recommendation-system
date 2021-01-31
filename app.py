@@ -51,7 +51,7 @@ def get_filter_label(value):
         return 'Государственное и муниципальное управление (ГМУ)'
     elif value == 'ИБ':
         return 'Информационная безопасность (ИБ)'
-    elif value == 'CУБД':
+    elif value == 'СУБД':
         return 'Базы данных (СУБД)'
     else:
         return value
@@ -860,7 +860,7 @@ def get_test_table(checkboxes):
         df_test = df[df['Требуемые компетенции'].apply(
             lambda x: checkboxes.issubset(x.split(', ')))][columns]
     else:
-        df_test = df.copy(deep=True)
+        df_test = df[columns]
     width_iter = [5, 10, 20, 50, 15]
     if not df_test.empty:
         children = dbc.Table(
