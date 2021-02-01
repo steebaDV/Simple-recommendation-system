@@ -16,23 +16,7 @@ font_family = 'Arial'
 testing = False
 
 
-# Name = ''
-# Surname = ''
-# Vk = ''
-# Vk_name = ''
-# Group = ''
-# Email = ''
-# Need_team = True
-# Project_types = ''
-# Professions = ''
-# ID_labels = ''
-# IMG_url = ''
-# Person_data = []
-# Index = -1
-
-
 def debug(email):
-    print(pd.read_csv('students.csv', encoding='cp1251', index_col=0))
     print()
     student_data = get_student_data(email)
     for i in range(len(student_data)):
@@ -145,21 +129,11 @@ def get_student_data(email):
 
 
 def put_student_data(student_data, email, mode):
-    print(student_data)
-    print(email)
     data = pd.read_csv('students.csv', encoding='cp1251', index_col=0)
     if mode == 'Анкета':
         data.loc[email] = student_data[:6] + data.loc[email][6:-1].to_list() + [student_data[-1]]
-        print(data.loc[email])
     elif mode == 'Тест':
-        print(data.loc[email][:6].to_list())
-        print(student_data)
-        print([data.loc[email][-1]])
-        print()
-        print(data.loc[email][:6].to_list() + student_data + [data.loc[email][-1]])
-        print(data.loc[email])
         data.loc[email] = data.loc[email][:6].to_list() + student_data + [data.loc[email][-1]]
-        print(data.loc[email])
     data.to_csv('students.csv', encoding='cp1251')
 
 
@@ -336,13 +310,6 @@ anketa = dbc.Container(
                     ),
                     dbc.Row(
                         [
-                            # dbc.Col(
-                            #     dbc.Row(
-                            #         [
-                            #             dbc.Col(need_team, width=4),
-                            #             dbc.Col(html.Label('login'), id='log_in', width=2),
-                            #         ]
-                            #     ), width=6),
                             dbc.Col(
                                 html.Div(need_team, style={'text-align': 'right', 'margin-right': '4rem'}), width=6),
                             dbc.Col(vk_url, width=6)
@@ -508,10 +475,11 @@ test = dbc.Container(
                                     value=[],
                                     labelStyle={
                                         'display': 'block',
-                                        'font-size': 10,
+                                        'font-size': 12,
                                         'text-align': 'left',
-                                        'fontWeight': 500
-                                    },
+                                        'fontWeight': 500,
+                                        'line-height':166
+                                    }
 
                                 )], width=2),
                             dbc.Col(
@@ -715,7 +683,36 @@ def get_description(name, surname):
     if name == 'download' and surname == 'data':
         return build_download_button()
     else:
-        return None
+        children = [
+            html.Div(
+                html.H5('Инструкция'), style={'text-align': 'center', 'width': '100%'}
+            ),
+            html.Ul(
+                [
+                    html.Li(
+                        """Для начала необходимо заполнить анкету"""
+                    ),
+                    html.Li(
+                        """После заполнения анкеты нажмите на кнопку “ПОДТВЕРДИТЬ”, затем “ДАЛЕЕ”"""
+                    ),
+                    html.Li(
+                        """Выберите подходящие для вас области деятельности"""
+                    ),
+                    html.Li(
+                        """Укажите понравившиеся ID для подбора потенциальных тиммейтов через запятую в поле ниже (не более 5 проектов)"""
+                    ),
+                    html.Li(
+                        """После вам нужно нажать на кнопку “ПОДТВЕРДИТЬ”, затем “ДАЛЕЕ”, вас перекинет в раздел “Поиск команды”"""
+                    ),
+                    html.Li(
+                        """В разделе "Поиск команды" все, что нужно делать - это обновлять таблицу по мере прохождения студентами этого теста нажатием на кнопку “ОБНОВИТЬ”, далее
+    выбрать понравившихся кандидатов из списка и написать им, используя их ссылки в VK или почту
+    """
+                    )
+                ], style={'line-height': 30}
+            )
+        ]
+        return children
 
 
 @app.callback(
@@ -762,7 +759,6 @@ def submit_input_anketa(button, vk, group, name, surname, email, need_team):
         r = requests.get(api_url)
         response_dict = r.json()
         if response_dict.get('response'):
-            print('АНКЕТА')
             if not check_student_in_data(email):
                 columns = [
                     'Аватарка',
@@ -794,7 +790,6 @@ def submit_input_anketa(button, vk, group, name, surname, email, need_team):
                 need_team
             ]
             put_student_data(student_data, email, 'Анкета')
-            debug(email)
 
             return True, False, '#test', 'ДАЛЕЕ'
         else:
@@ -873,23 +868,17 @@ def get_button_test_enabled(valid, invalid, checkboxes, button):
 def submit_input_test(button, input, email, checkboxes):
     changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
     if 'button_test' in changed_id:
-        print('ТЕСТ')
         professions = ', '.join(checkboxes)
         checkboxes = set(checkboxes)
-        print('ТЕСТ1')
         project_types = get_top_types(checkboxes)
         id_labels = ', '.join(input.split())
-        print('ТЕСТ2')
 
         student_data = [
             professions,
             project_types,
             id_labels
         ]
-        print('ТЕСТ3')
         put_student_data(student_data, email, mode='Тест')
-        print('ТЕСТ4')
-        debug(email)
         return '#search', 'ДАЛЕЕ'
     else:
         # id_labels = ''
@@ -1169,7 +1158,7 @@ if not testing:
 if __name__ == '__main__':
     if not testing:
         # FOR ALIBABA CLOUD
-        app.run_server(debug=True)
+        app.run_server(debug=False)
     else:
         # FOR AWS
         application.run(debug=True,
