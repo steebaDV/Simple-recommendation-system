@@ -6,6 +6,7 @@ from dash.dependencies import Input, Output
 from dash_bootstrap_components.themes import LITERA
 
 import pandas as pd
+import numpy as np
 from collections import Counter
 import re
 import requests
@@ -13,36 +14,29 @@ import requests
 TOKEN = 'e393732f809fa35d80b21c68f99ac76812f7c21e3639ab43eac20ad8a76f5d78aacd04d04df42e7bfe1c1'
 font_family = 'Arial'
 testing = False
-Name = ''
-Surname = ''
-Vk = ''
-Vk_name = ''
-Group = ''
-Email = ''
-Need_team = True
-Project_types = ''
-Professions = ''
-ID_labels = ''
-IMG_url = ''
-Person_data = []
-Index = -1
 
 
-def debug():
+# Name = ''
+# Surname = ''
+# Vk = ''
+# Vk_name = ''
+# Group = ''
+# Email = ''
+# Need_team = True
+# Project_types = ''
+# Professions = ''
+# ID_labels = ''
+# IMG_url = ''
+# Person_data = []
+# Index = -1
+
+
+def debug(email):
+    print(pd.read_csv('students.csv', encoding='cp1251', index_col=0))
     print()
-    print(f'Name: {Name}')
-    print(f'Surname: {Surname}')
-    print(f'Vk: {Vk}')
-    print(f'Vk_name: {Vk_name}')
-    print(f'Email: {Email}')
-    print(f'Group: {Group}')
-    print(f'Need_team: {Need_team}')
-    print(f'Project_types: {Project_types}')
-    print(f'Professions: {Professions}')
-    print(f'ID_labels: {ID_labels}')
-    print(f'IMG_url: {IMG_url}')
-    print(f'Person_data: {Person_data}')
-    print(f'Index: {Index}')
+    student_data = get_student_data(email)
+    for i in range(len(student_data)):
+        print(f'{student_data.index[i]}: {student_data[i]}')
     print()
 
 
@@ -87,21 +81,21 @@ def get_vk_name(text, row):
         return f'({vk_name})'
 
 
-def get_top_students(data):
+def get_top_students(data, student_data):
     top_list = []
     for row in range(len(data)):
         point = 0
         data_row = data.iloc[row]
-        if data_row['Группа'] == Person_data[3]:
+        if data_row['Группа'] == student_data[3]:
             point += 1
-        if data_row['Группа'].split('/')[0] == Person_data[3].split('/')[0]:
+        if data_row['Группа'].split('/')[0] == student_data[3].split('/')[0]:
             point += 1
-        if data_row['Институт'] == Person_data[2]:
+        if data_row['Институт'] == student_data[2]:
             point += 1
 
-        point += 3 * len(set(data_row['Выбранные проекты'].split(', ')) & set(Person_data[8].split(', ')))
-        point += len(set(data_row['Список компетенций'].split(', ')) & set(Person_data[7].split(', ')))
-        point += len(set(data_row['Подходящие типы проектов'].split(', ')) & set(Person_data[6].split(', ')))
+        point += 3 * len(set(data_row['Выбранные проекты'].split(', ')) & set(student_data[8].split(', ')))
+        point += len(set(data_row['Области деятельности'].split(', ')) & set(student_data[7].split(', ')))
+        point += len(set(data_row['Подходящие типы проектов'].split(', ')) & set(student_data[6].split(', ')))
 
         top_list.append(int(point))
     return top_list
@@ -109,7 +103,7 @@ def get_top_students(data):
 
 def build_download_button():
     import os
-    data = pd.read_csv("students.csv", encoding='cp1251')
+    data = pd.read_csv('students.csv', encoding='cp1251', index_col=0)
     if os.path.isfile('assets/files/students.xlsx'):
         os.remove('assets/files/students.xlsx')
     data.to_excel('assets/files/students.xlsx', index=False, encoding='cp1251')
@@ -137,12 +131,36 @@ def build_download_button():
     return button
 
 
-def check_student_in_data():
-    data = pd.read_csv('students.csv', encoding='cp1251')
-    for index, row in enumerate(data.values):
-        if row[1].split(':')[0] == f'{Surname} {Name}' and row[3] == Group:
-            global Index
-            Index = index
+def check_student_in_data(email):
+    try:
+        get_student_data(email)
+        bool = True
+    except:
+        bool = False
+    return bool
+
+
+def get_student_data(email):
+    return pd.read_csv('students.csv', encoding='cp1251', index_col=0).loc[email]
+
+
+def put_student_data(student_data, email, mode):
+    print(student_data)
+    print(email)
+    data = pd.read_csv('students.csv', encoding='cp1251', index_col=0)
+    if mode == 'Анкета':
+        data.loc[email] = student_data[:6] + data.loc[email][6:-1].to_list() + [student_data[-1]]
+        print(data.loc[email])
+    elif mode == 'Тест':
+        print(data.loc[email][:6].to_list())
+        print(student_data)
+        print([data.loc[email][-1]])
+        print()
+        print(data.loc[email][:6].to_list() + student_data + [data.loc[email][-1]])
+        print(data.loc[email])
+        data.loc[email] = data.loc[email][:6].to_list() + student_data + [data.loc[email][-1]]
+        print(data.loc[email])
+    data.to_csv('students.csv', encoding='cp1251')
 
 
 filter_list = [
@@ -234,7 +252,7 @@ email = dbc.FormGroup(
                   style={'fontWeight': 500}),
         dbc.Row(
             [
-                dbc.Input(id="email-input", value="", placeholder='Например: stebunov.dv@edu.spbstu.ru'),
+                dbc.Input(id="email-input", value="", placeholder='Например: ivanov.ia@edu.spbstu.ru'),
                 dbc.FormText("Принимаются данные только вашей корпоративной почты"),
                 dbc.FormFeedback(
                     "Корректный ввод", valid=True
@@ -550,7 +568,7 @@ test = dbc.Container(
                            'position': 'relative',
                            'left': '40%',
                            }
-                ), href='#search'
+                ), href='#search', id='anchor_button_test'
             ), style={'width': '100%'}
         )
     ], fluid=True)
@@ -735,7 +753,6 @@ def get_button_anketa_enabled(valid1, valid2, valid3, valid4):
     ]
 )
 def submit_input_anketa(button, vk, group, name, surname, email, need_team):
-    global ID_labels
     changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
     if 'button_anketa' in changed_id:
         input_vk = vk
@@ -745,19 +762,39 @@ def submit_input_anketa(button, vk, group, name, surname, email, need_team):
         r = requests.get(api_url)
         response_dict = r.json()
         if response_dict.get('response'):
-            global Name, Surname, Group, Email, Vk, IMG_url, Vk_name, Need_team, Index
-            Name = name
-            Surname = surname
-            Group = group
-            Email = email
-            Vk = vk
-            Need_team = need_team
-            IMG_url = response_dict['response'][0]['photo_50']
+            print('АНКЕТА')
+            if not check_student_in_data(email):
+                columns = [
+                    'Аватарка',
+                    'Фамилия Имя',
+                    'Институт',
+                    'Группа',
+                    'Ссылка VK',
+                    'Почта',
+                    'Подходящие типы проектов',
+                    'Области деятельности',
+                    'Выбранные проекты',
+                    'Ищет команду',
+                ]
+                student_data_null = pd.DataFrame(data=[[np.NaN] * len(columns)], index=[email], columns=columns)
+                student_data_null.to_csv('students.csv', encoding='cp1251', mode='a', header=False)
+
+            img_url = response_dict['response'][0]['photo_50']
             vk_first_name = response_dict['response'][0]['first_name']
             vk_last_name = response_dict['response'][0]['last_name']
-            Vk_name = f'{vk_last_name} {vk_first_name}'
+            vk_name = f'{vk_last_name} {vk_first_name}'
 
-            check_student_in_data()
+            student_data = [
+                img_url,
+                f'{surname} {name}:{vk_name}',
+                institute_dict[group[:3]],
+                group,
+                f'vk.com/{vk}',
+                email,
+                need_team
+            ]
+            put_student_data(student_data, email, 'Анкета')
+            debug(email)
 
             return True, False, '#test', 'ДАЛЕЕ'
         else:
@@ -806,43 +843,59 @@ def get_id_input_is_correct(input):
         Input('id-input', 'valid'),
         Input('id-input', 'invalid'),
         Input("checkboxes", 'value'),
+        Input("button_anketa", 'children')
     ]
 )
-def get_button_test_enabled(valid, invalid, checkboxes):
+def get_button_test_enabled(valid, invalid, checkboxes, button):
     checkboxes = set(checkboxes)
     length = len(df[df['Требуемые компетенции'].apply(
         lambda x: checkboxes.issubset(x.split(', ')))])
 
-    if valid and not invalid and checkboxes and length:
+    if valid and not invalid and checkboxes and length and button == 'ДАЛЕЕ':
         return False
     else:
         return True
 
 
 @app.callback(
-    Output("id-label", 'children'),
+    [
+        # Output("id-label", 'children'),
+        Output('anchor_button_test', 'href'),
+        Output('button_test', 'children'),
+    ],
     [
         Input('button_test', 'n_clicks'),
         Input('id-input', 'value'),
-        Input('id-input', 'valid'),
+        Input('email-input', 'value'),
         Input("checkboxes", 'value'),
     ]
 )
-def submit_input_test(button, input, valid, checkboxes):
-    global ID_labels, Professions, Project_types
+def submit_input_test(button, input, email, checkboxes):
     changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
     if 'button_test' in changed_id:
-        if valid:
-            Professions = ', '.join(checkboxes)
+        print('ТЕСТ')
+        professions = ', '.join(checkboxes)
+        checkboxes = set(checkboxes)
+        print('ТЕСТ1')
+        project_types = get_top_types(checkboxes)
+        id_labels = ', '.join(input.split())
+        print('ТЕСТ2')
 
-            checkboxes = set(checkboxes)
-            Project_types = get_top_types(checkboxes)
-
-            id_labels = ', '.join(input.split())
-            ID_labels = id_labels
-            return f'({id_labels})'
+        student_data = [
+            professions,
+            project_types,
+            id_labels
+        ]
+        print('ТЕСТ3')
+        put_student_data(student_data, email, mode='Тест')
+        print('ТЕСТ4')
+        debug(email)
+        return '#search', 'ДАЛЕЕ'
     else:
-        return f'({ID_labels})' if ID_labels else ''
+        # id_labels = ''
+        # if email and check_student_in_data(email):
+        #     id_labels = get_student_data(email)[8]
+        return '#test', 'ПОДТВЕРДИТЬ'
 
 
 @app.callback(
@@ -853,7 +906,6 @@ def submit_input_test(button, input, valid, checkboxes):
 )
 def get_test_table(checkboxes):
     checkboxes = set(checkboxes)
-
     columns = ['ID', 'Тип проекта', 'Название проекта', 'Краткое описание', 'Требуемые компетенции']
 
     if checkboxes:
@@ -943,15 +995,15 @@ def get_top_professions(checkboxes):
 @app.callback(
     Output('button_search', 'disabled'),
     [
-        Input('button_anketa', 'disabled'),
-        Input('button_test', 'disabled')
+        Input('button_anketa', 'children'),
+        Input('button_test', 'children')
     ]
 )
 def get_button_search_enabled(button1, button2):
-    if button1 or button2:
-        return True
-    else:
+    if button1 == 'ДАЛЕЕ' == button2:
         return False
+    else:
+        return True
 
 
 @app.callback(
@@ -959,9 +1011,10 @@ def get_button_search_enabled(button1, button2):
     Output("search_table", 'children'),
     [
         Input("button_search", 'n_clicks'),
+        Input('email-input', 'value')
     ]
 )
-def get_search_table(button):
+def get_search_table(button, email):
     changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
     if 'button_search' in changed_id:
         columns = [
@@ -972,57 +1025,61 @@ def get_search_table(button):
             'Ссылка VK',
             'Почта',
             'Подходящие типы проектов',
-            'Список компетенций',
+            'Области деятельности',
             'Выбранные проекты',
             'Ищет команду',
             'Баллы совместимости'
         ]
-        global Person_data, Index
+        # global Person_data, Index
+        #
+        # person_data = [
+        #     IMG_url,
+        #     f'{Surname} {Name}:{Vk_name}',
+        #     institute_dict[Group[:3]],
+        #     Group,
+        #     f'vk.com/{Vk}',
+        #     Email,
+        #     Project_types,
+        #     Professions,
+        #     ID_labels,
+        #     Need_team
+        # ]
+        # if Index == -1:
+        #     Person_data = person_data[:]
+        #
+        #     pd_row = pd.DataFrame(data=[Person_data], columns=columns[:-1])
+        #     pd_row.to_csv('students.csv', mode='a', index=False, encoding="cp1251", header=False)
+        #
+        #     data = pd.read_csv('students.csv', encoding="cp1251")
+        #     Index = len(data) - 1
+        #     while not (data.iloc[Index, :-1].values == Person_data[:-1]).all():
+        #         data = pd.read_csv('students.csv', encoding="cp1251")
+        #         for index, row in enumerate(data.values):
+        #             if (row == Person_data).all():
+        #                 Index = index
+        #                 break
+        #
+        # elif person_data != Person_data:
+        #     Person_data = person_data[:]
+        #
+        #     students_data = pd.read_csv('students.csv', encoding="cp1251")
+        #     pd_row = pd.DataFrame(data=[Person_data], columns=columns[:-1])
+        #
+        #     data = pd.concat([students_data[:Index], pd_row, students_data[Index + 1:]], ignore_index=True)
+        #
+        #     data.to_csv('students.csv', index=False, encoding="cp1251")
+        # else:
+        #     data = pd.read_csv('students.csv', encoding="cp1251")
+        data = pd.read_csv('students.csv', encoding='cp1251', index_col=0)
+        student_data = data.loc[email]
 
-        person_data = [
-            IMG_url,
-            f'{Surname} {Name}:{Vk_name}',
-            institute_dict[Group[:3]],
-            Group,
-            f'vk.com/{Vk}',
-            Email,
-            Project_types,
-            Professions,
-            ID_labels,
-            Need_team
-        ]
-        if Index == -1:
-            Person_data = person_data[:]
-
-            pd_row = pd.DataFrame(data=[Person_data], columns=columns[:-1])
-            pd_row.to_csv('students.csv', mode='a', index=False, encoding="cp1251", header=False)
-
-            data = pd.read_csv('students.csv', encoding="cp1251")
-            Index = len(data) - 1
-            while not (data.iloc[Index, :-1].values == Person_data[:-1]).all():
-                data = pd.read_csv('students.csv', encoding="cp1251")
-                for index, row in enumerate(data.values):
-                    if (row == Person_data).all():
-                        Index = index
-                        break
-
-        elif person_data != Person_data:
-            Person_data = person_data[:]
-
-            students_data = pd.read_csv('students.csv', encoding="cp1251")
-            pd_row = pd.DataFrame(data=[Person_data], columns=columns[:-1])
-
-            data = pd.concat([students_data[:Index], pd_row, students_data[Index + 1:]], ignore_index=True)
-
-            data.to_csv('students.csv', index=False, encoding="cp1251")
-        else:
-            data = pd.read_csv('students.csv', encoding="cp1251")
-        data['Баллы совместимости'] = get_top_students(data)
+        data['Баллы совместимости'] = get_top_students(data, student_data)
         data.sort_values(by='Баллы совместимости', ascending=False, inplace=True)
+        data['Выбранные проекты'] = data['Выбранные проекты'].apply(str)
 
-        index = data.index.to_list().index(Index)
+        index = data.index.get_loc(email)
         if index:
-            data.iloc[index, :], data.iloc[0, :] = data.iloc[0, :], data.iloc[index, :]
+            data.iloc[index], data.iloc[0] = data.iloc[0], data.iloc[index]
 
         width_iter = [5, 10, 5, 10, 10, 15, 15, 15, 5, 5, 5]
 
