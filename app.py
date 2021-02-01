@@ -478,7 +478,7 @@ test = dbc.Container(
                                         'font-size': 12,
                                         'text-align': 'left',
                                         'fontWeight': 500,
-                                        'line-height':166
+                                        'line-height':16
                                     }
 
                                 )], width=2),
@@ -709,7 +709,7 @@ def get_description(name, surname):
     выбрать понравившихся кандидатов из списка и написать им, используя их ссылки в VK или почту
     """
                     )
-                ], style={'line-height': 30}
+                ], style={'line-height': 25}
             )
         ]
         return children
