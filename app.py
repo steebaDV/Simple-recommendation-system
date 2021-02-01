@@ -52,7 +52,7 @@ def get_filter_label(value):
 
 
 def get_top_types(professions):
-    df_filtered = df[df['Требуемые компетенции'].apply(
+    df_filtered = df[df['Требуемые области деятельности'].apply(
         lambda x: professions.issubset(x.split(', ')))]
     type_list = []
     for row in df_filtered['Тип проекта'].apply(lambda x: x.split(', ')).tolist():
@@ -848,7 +848,7 @@ def get_id_input_is_correct(input):
 )
 def get_button_test_enabled(valid, invalid, checkboxes, button):
     checkboxes = set(checkboxes)
-    length = len(df[df['Требуемые компетенции'].apply(
+    length = len(df[df['Требуемые области деятельности'].apply(
         lambda x: checkboxes.issubset(x.split(', ')))])
 
     if valid and not invalid and checkboxes and length and button == 'ДАЛЕЕ':
@@ -906,10 +906,10 @@ def submit_input_test(button, input, email, checkboxes):
 )
 def get_test_table(checkboxes):
     checkboxes = set(checkboxes)
-    columns = ['ID', 'Тип проекта', 'Название проекта', 'Краткое описание', 'Требуемые компетенции']
+    columns = ['ID', 'Тип проекта', 'Название проекта', 'Краткое описание', 'Требуемые области деятельности']
 
     if checkboxes:
-        df_test = df[df['Требуемые компетенции'].apply(
+        df_test = df[df['Требуемые области деятельности'].apply(
             lambda x: checkboxes.issubset(x.split(', ')))][columns]
     else:
         df_test = df[columns]
@@ -978,7 +978,7 @@ def get_top_professions(checkboxes):
     checkboxes = set(checkboxes)
     length = 0
     if checkboxes:
-        length = len(df[df['Требуемые компетенции'].apply(
+        length = len(df[df['Требуемые области деятельности'].apply(
             lambda x: checkboxes.issubset(x.split(', ')))])
     if length:
         checkboxes = set(checkboxes)
