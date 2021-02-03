@@ -189,7 +189,7 @@ class Students:
     def insert_students(self, row):
         conn = psycopg2.connect(self.db, sslmode='require')
         cur = conn.cursor()
-        cur.execute("""INSERT INTO students VALUES (?, ?, ?, ?, ?, ?, NULL, NULL, NULL, ?)""", tuple(row))
+        cur.execute("""INSERT INTO students VALUES (%s, %s, %s, %s, %s, %s, NULL, NULL, NULL, %s)""", tuple(row))
         conn.commit()
 
     def update_students(self, row, email, mode):
@@ -199,20 +199,20 @@ class Students:
             row.pop(5)
             row.append(email)
             cur.execute("""UPDATE students
-                        SET Аватарка = ?,
-                        Фамилия_Имя = ?,
-                        Институт = ?,
-                        Группа = ?,
-                        Ссылка_VK = ?,
-                        Ищет_команду = ?
-                        WHERE Почта = ?
+                        SET Аватарка = %s,
+                        Фамилия_Имя = %s,
+                        Институт = %s,
+                        Группа = %s,
+                        Ссылка_VK = %s,
+                        Ищет_команду = %s
+                        WHERE Почта = %s
                         """, tuple(row))
         elif mode == 'Тест':
             cur.execute("""UPDATE students
-                        SET Подходящие_типы_проектов = ?,
-                        Области_деятельности = ?,
-                        Выбранные_проекты = ?
-                        WHERE Почта = ?
+                        SET Подходящие_типы_проектов = %s,
+                        Области_деятельности = %s,
+                        Выбранные_проекты = %s
+                        WHERE Почта = %s
                         """, tuple(row + [email]))
         conn.commit()
 
