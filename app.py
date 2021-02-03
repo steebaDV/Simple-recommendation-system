@@ -6,10 +6,11 @@ from dash.dependencies import Input, Output
 from dash_bootstrap_components.themes import LITERA
 
 import pandas as pd
-import numpy as np
 from collections import Counter
 import re
 import requests
+import psycopg2
+import os
 
 TOKEN = 'e393732f809fa35d80b21c68f99ac76812f7c21e3639ab43eac20ad8a76f5d78aacd04d04df42e7bfe1c1'
 font_family = 'Arial'
@@ -87,10 +88,13 @@ def get_top_students(data, student_data):
 
 def build_download_button():
     import os
-    data = pd.read_csv('students.csv', encoding='cp1251', index_col=0)
+    print(db.get_pandas())
+    data = db.get_pandas()
+    print(data)
     if os.path.isfile('assets/files/students.xlsx'):
         os.remove('assets/files/students.xlsx')
     data.to_excel('assets/files/students.xlsx', index=False, encoding='cp1251')
+    print(pd.read_excel('assets/files/students.xlsx'))
 
     button = html.Div(
         html.Form(
@@ -125,16 +129,7 @@ def check_student_in_data(email):
 
 
 def get_student_data(email):
-    return pd.read_csv('students.csv', encoding='cp1251', index_col=0).loc[email]
-
-
-def put_student_data(student_data, email, mode):
-    data = pd.read_csv('students.csv', encoding='cp1251', index_col=0)
-    if mode == 'Анкета':
-        data.loc[email] = student_data[:6] + data.loc[email][6:-1].to_list() + [student_data[-1]]
-    elif mode == 'Тест':
-        data.loc[email] = data.loc[email][:6].to_list() + student_data + [data.loc[email][-1]]
-    data.to_csv('students.csv', encoding='cp1251')
+    return db.get_pandas().loc[email]
 
 
 filter_list = [
@@ -154,7 +149,95 @@ institute_dict = {
     '323': 'ИЭ',
     '373': 'ИПМЭиТ'
 }
+student_columns = [
+    'Аватарка',
+    'Фамилия Имя',
+    'Институт',
+    'Группа',
+    'Ссылка VK',
+    'Почта',
+    'Подходящие типы проектов',
+    'Области деятельности',
+    'Выбранные проекты',
+    'Ищет команду',
+]
+
+
+class Students:
+    def __init__(self, db):
+        self.db = db
+        self.create_students()
+
+    def create_students(self):
+        conn = psycopg2.connect(self.db, sslmode='require')
+        cur = conn.cursor()
+        cur.execute(
+            """CREATE TABLE if not exists students
+                    (Аватарка text, 
+                    Фамилия_Имя text, 
+                    Институт text,
+                    Группа text,
+                    Ссылка_VK text,
+                    Почта text,
+                    Подходящие_типы_проектов text,
+                    Области_деятельности text,
+                    Выбранные_проекты text,
+                    Ищет_команду bool)"""
+        )
+        conn.commit()
+
+    def insert_students(self, row):
+        conn = psycopg2.connect(self.db, sslmode='require')
+        cur = conn.cursor()
+        cur.execute("""INSERT INTO students VALUES (?, ?, ?, ?, ?, ?, NULL, NULL, NULL, ?)""", tuple(row))
+        conn.commit()
+
+    def update_students(self, row, email, mode):
+        conn = psycopg2.connect(self.db, sslmode='require')
+        cur = conn.cursor()
+        if mode == 'Анкета':
+            row.pop(5)
+            row.append(email)
+            cur.execute("""UPDATE students
+                        SET Аватарка = ?,
+                        Фамилия_Имя = ?,
+                        Институт = ?,
+                        Группа = ?,
+                        Ссылка_VK = ?,
+                        Ищет_команду = ?
+                        WHERE Почта = ?
+                        """, tuple(row))
+        elif mode == 'Тест':
+            cur.execute("""UPDATE students
+                        SET Подходящие_типы_проектов = ?,
+                        Области_деятельности = ?,
+                        Выбранные_проекты = ?
+                        WHERE Почта = ?
+                        """, tuple(row + [email]))
+        conn.commit()
+
+    def get_students(self):
+        conn = psycopg2.connect(self.db, sslmode='require')
+        cur = conn.cursor()
+        return cur.execute("""SELECT * FROM students""").fetchall()
+
+    def get_pandas(self):
+        data_ = pd.DataFrame(data=self.get_students(), columns=student_columns)
+        data_.index = data_['Почта']
+        return data_
+
+    def __del__(self):
+        conn = psycopg2.connect(self.db, sslmode='require')
+        conn.close()
+
+
+
 df = pd.read_excel('opd.xlsx')
+
+DATABASE_URL = os.environ['DATABASE_URL']
+
+db = Students(DATABASE_URL)
+
 
 app = dash.Dash(__name__,
                 external_stylesheets=[LITERA],
@@ -478,7 +561,7 @@ test = dbc.Container(
                                         'font-size': 12,
                                         'text-align': 'left',
                                         'fontWeight': 500,
-                                        'line-height':16
+                                        'line-height': 16
                                     }
 
                                 )], width=2),
@@ -709,7 +792,7 @@ def get_description(name, surname):
     выбрать понравившихся кандидатов из списка и написать им, используя их ссылки в VK или почту
     """
                     )
-                ], style={'line-height': 25}
+                ], style={'line-height': 25, 'padding-top': '1rem'}
             )
         ]
         return children
@@ -759,22 +842,6 @@ def submit_input_anketa(button, vk, group, name, surname, email, need_team):
         r = requests.get(api_url)
         response_dict = r.json()
         if response_dict.get('response'):
-            if not check_student_in_data(email):
-                columns = [
-                    'Аватарка',
-                    'Фамилия Имя',
-                    'Институт',
-                    'Группа',
-                    'Ссылка VK',
-                    'Почта',
-                    'Подходящие типы проектов',
-                    'Области деятельности',
-                    'Выбранные проекты',
-                    'Ищет команду',
-                ]
-                student_data_null = pd.DataFrame(data=[[np.NaN] * len(columns)], index=[email], columns=columns)
-                student_data_null.to_csv('students.csv', encoding='cp1251', mode='a', header=False)
-
             img_url = response_dict['response'][0]['photo_50']
             vk_first_name = response_dict['response'][0]['first_name']
             vk_last_name = response_dict['response'][0]['last_name']
@@ -789,8 +856,10 @@ def submit_input_anketa(button, vk, group, name, surname, email, need_team):
                 email,
                 need_team
             ]
-            put_student_data(student_data, email, 'Анкета')
-
+            if check_student_in_data(email):
+                db.update_students(student_data, email, 'Анкета')
+            else:
+                db.insert_students(student_data)
             return True, False, '#test', 'ДАЛЕЕ'
         else:
             return False, True, '#anketa', 'ПОДТВЕРДИТЬ'
@@ -878,7 +947,7 @@ def submit_input_test(button, input, email, checkboxes):
             project_types,
             id_labels
         ]
-        put_student_data(student_data, email, mode='Тест')
+        db.update_students(student_data, email, mode='Тест')
         return '#search', 'ДАЛЕЕ'
     else:
         # id_labels = ''
@@ -1007,16 +1076,7 @@ def get_search_table(button, email):
     changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
     if 'button_search' in changed_id:
         columns = [
-            'Аватарка',
-            'Фамилия Имя',
-            'Институт',
-            'Группа',
-            'Ссылка VK',
-            'Почта',
-            'Подходящие типы проектов',
-            'Области деятельности',
-            'Выбранные проекты',
-            'Ищет команду',
+            *student_columns,
             'Баллы совместимости'
         ]
         # global Person_data, Index
@@ -1059,8 +1119,9 @@ def get_search_table(button, email):
         #     data.to_csv('students.csv', index=False, encoding="cp1251")
         # else:
         #     data = pd.read_csv('students.csv', encoding="cp1251")
-        data = pd.read_csv('students.csv', encoding='cp1251', index_col=0)
+        data = db.get_pandas()
         student_data = data.loc[email]
+        data = data.dropna()
 
         data['Баллы совместимости'] = get_top_students(data, student_data)
         data.sort_values(by='Баллы совместимости', ascending=False, inplace=True)
