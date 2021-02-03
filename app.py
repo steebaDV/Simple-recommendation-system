@@ -166,11 +166,12 @@ student_columns = [
 class Students:
     def __init__(self, db):
         self.db = db
+        self.conn = psycopg2.connect(self.db, sslmode='require')
         self.create_students()
 
     def create_students(self):
-        conn = psycopg2.connect(self.db, sslmode='require')
-        cur = conn.cursor()
+
+        cur = self.conn.cursor()
         cur.execute(
             """CREATE TABLE if not exists students
                     (Аватарка text, 
@@ -184,17 +185,15 @@ class Students:
                     Выбранные_проекты text,
                     Ищет_команду bool)"""
         )
-        conn.commit()
+        self.conn.commit()
 
     def insert_students(self, row):
-        conn = psycopg2.connect(self.db, sslmode='require')
-        cur = conn.cursor()
+        cur = self.conn.cursor()
         cur.execute("""INSERT INTO students VALUES (%s, %s, %s, %s, %s, %s, NULL, NULL, NULL, %s)""", tuple(row))
-        conn.commit()
+        self.conn.commit()
 
     def update_students(self, row, email, mode):
-        conn = psycopg2.connect(self.db, sslmode='require')
-        cur = conn.cursor()
+        cur = self.conn.cursor()
         if mode == 'Анкета':
             row.pop(5)
             row.append(email)
@@ -214,11 +213,10 @@ class Students:
                         Выбранные_проекты = %s
                         WHERE Почта = %s
                         """, tuple(row + [email]))
-        conn.commit()
+        self.conn.commit()
 
     def get_students(self):
-        conn = psycopg2.connect(self.db, sslmode='require')
-        cur = conn.cursor()
+        cur = self.conn.cursor()
         return cur.execute("""SELECT * FROM students""").fetchall()
 
     def get_pandas(self):
@@ -227,8 +225,7 @@ class Students:
         return data_
 
     def __del__(self):
-        conn = psycopg2.connect(self.db, sslmode='require')
-        conn.close()
+        self.conn.close()
 
 
 
