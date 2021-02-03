@@ -189,14 +189,7 @@ class Students:
 
     def insert_students(self, row):
         cur = self.conn.cursor()
-        x0 = row[0]
-        x1 = row[1]
-        x2 = row[2]
-        x3 = row[3]
-        x4 = row[4]
-        x5 = row[5]
-        x9 = row[-1]
-        cur.execute(f"""INSERT INTO students VALUES ({x0}, {x1}, {x2}, {x3}, {x4}, {x5}, NULL, NULL, NULL, {x9})""")
+        cur.execute(f"""INSERT INTO students VALUES (%s, %s, %s, %s, %s, %s, NULL, NULL, NULL, %s)""", row)
         self.conn.commit()
 
     def update_students(self, row, email, mode):
