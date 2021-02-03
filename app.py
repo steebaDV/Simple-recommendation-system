@@ -189,8 +189,7 @@ class Students:
     def insert_students(self, row):
         conn = psycopg2.connect(self.db, sslmode='require')
         cur = conn.cursor()
-        cur.execute(f"""INSERT INTO students VALUES (
-{row[0]}, {row[1]}, {row[2]}, {row[3]}, {row[4]}, {row[5]}, NULL, NULL, NULL, {row[6]})""")
+        cur.execute("""INSERT INTO students VALUES (%s, %s, %s, %s, %s, %s, NULL, NULL, NULL, %s)""", tuple(row))
         conn.commit()
 
     def update_students(self, row, email, mode):
@@ -199,22 +198,22 @@ class Students:
         if mode == 'Анкета':
             row.pop(5)
             row.append(email)
-            cur.execute(f"""UPDATE students
-                        SET Аватарка = {row[0]},
-                        Фамилия_Имя = {row[1]},
-                        Институт = {row[2]},
-                        Группа = {row[3]},
-                        Ссылка_VK = {row[4]},
-                        Ищет_команду = {row[5]}
-                        WHERE Почта = {row[6]}
-                        """)
+            cur.execute("""UPDATE students
+                        SET Аватарка = %s,
+                        Фамилия_Имя = %s,
+                        Институт = %s,
+                        Группа = %s,
+                        Ссылка_VK = %s,
+                        Ищет_команду = %s
+                        WHERE Почта = %s
+                        """, tuple(row))
         elif mode == 'Тест':
-            cur.execute(f"""UPDATE students
-                        SET Подходящие_типы_проектов = {row[0]},
-                        Области_деятельности = {row[1]},
-                        Выбранные_проекты = {row[2]}
-                        WHERE Почта = {email}
-                        """)
+            cur.execute("""UPDATE students
+                        SET Подходящие_типы_проектов = %s,
+                        Области_деятельности = %s,
+                        Выбранные_проекты = %s
+                        WHERE Почта = %s
+                        """, tuple(row + [email]))
         conn.commit()
 
     def get_students(self):
@@ -861,6 +860,7 @@ def submit_input_anketa(button, vk, group, name, surname, email, need_team):
                 db.update_students(student_data, email, 'Анкета')
             else:
                 db.insert_students(student_data)
+            print(db.get_pandas())
             return True, False, '#test', 'ДАЛЕЕ'
         else:
             return False, True, '#anketa', 'ПОДТВЕРДИТЬ'
