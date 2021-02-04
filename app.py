@@ -1078,47 +1078,9 @@ def get_search_table(button, email):
             *student_columns,
             'Баллы совместимости'
         ]
-        # global Person_data, Index
-        #
-        # person_data = [
-        #     IMG_url,
-        #     f'{Surname} {Name}:{Vk_name}',
-        #     institute_dict[Group[:3]],
-        #     Group,
-        #     f'vk.com/{Vk}',
-        #     Email,
-        #     Project_types,
-        #     Professions,
-        #     ID_labels,
-        #     Need_team
-        # ]
-        # if Index == -1:
-        #     Person_data = person_data[:]
-        #
-        #     pd_row = pd.DataFrame(data=[Person_data], columns=columns[:-1])
-        #     pd_row.to_csv('students.csv', mode='a', index=False, encoding="cp1251", header=False)
-        #
-        #     data = pd.read_csv('students.csv', encoding="cp1251")
-        #     Index = len(data) - 1
-        #     while not (data.iloc[Index, :-1].values == Person_data[:-1]).all():
-        #         data = pd.read_csv('students.csv', encoding="cp1251")
-        #         for index, row in enumerate(data.values):
-        #             if (row == Person_data).all():
-        #                 Index = index
-        #                 break
-        #
-        # elif person_data != Person_data:
-        #     Person_data = person_data[:]
-        #
-        #     students_data = pd.read_csv('students.csv', encoding="cp1251")
-        #     pd_row = pd.DataFrame(data=[Person_data], columns=columns[:-1])
-        #
-        #     data = pd.concat([students_data[:Index], pd_row, students_data[Index + 1:]], ignore_index=True)
-        #
-        #     data.to_csv('students.csv', index=False, encoding="cp1251")
-        # else:
-        #     data = pd.read_csv('students.csv', encoding="cp1251")
         data = db.get_pandas()
+
+        return dbc.Table.from_dataframe(data, striped=True, bordered=True, hover=True)
         student_data = data.loc[email]
         data = data.dropna()
 
