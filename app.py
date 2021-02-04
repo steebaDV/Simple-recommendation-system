@@ -1060,7 +1060,7 @@ def get_button_search_enabled(button1, button2):
     if button1 == 'ДАЛЕЕ' == button2:
         return False
     else:
-        return True
+        return False  #Я тут
 
 
 @app.callback(
