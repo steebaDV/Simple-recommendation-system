@@ -855,11 +855,13 @@ def submit_input_anketa(button, vk, group, name, surname, email, need_team):
                 1 if need_team else 0
             ]
             if check_student_in_data(email):
+                word = '1'
                 db.update_students(student_data, email, 'Анкета')
             else:
+                word = '2'
                 db.insert_students(student_data)
             print(db.get_pandas())
-            return True, False, '#test', 'ДАЛЕЕ'
+            return True, False, '#test', word # Я тут
         else:
             return False, True, '#anketa', 'ПОДТВЕРДИТЬ'
     else:
