@@ -189,7 +189,9 @@ class Students:
 
     def insert_students(self, row):
         cur = self.conn.cursor()
-        cur.execute(f"""INSERT INTO students VALUES (%s, %s, %s, %s, %s, %s, NULL, NULL, NULL, %s)""", row)
+        # cur.execute(f"""INSERT INTO students VALUES (%s, %s, %s, %s, %s, %s, NULL, NULL, NULL, %s)""", row)
+        cur.execute(
+            f"""INSERT INTO students VALUES (%s, %s, %s, %s, %s, %s, NULL, NULL, NULL, %s)""", row)
         self.conn.commit()
 
     def update_students(self, row, email, mode):
@@ -217,7 +219,8 @@ class Students:
 
     def get_students(self):
         cur = self.conn.cursor()
-        return cur.execute("""SELECT * FROM students""").fetchall()
+        cur.execute("""SELECT * FROM students""")
+        return cur.fetchall()
 
     def get_pandas(self):
         data_ = pd.DataFrame(data=self.get_students(), columns=student_columns)
@@ -228,13 +231,11 @@ class Students:
         self.conn.close()
 
 
-
 df = pd.read_excel('opd.xlsx')
 
 DATABASE_URL = os.environ['DATABASE_URL']
 
 db = Students(DATABASE_URL)
-
 
 app = dash.Dash(__name__,
                 external_stylesheets=[LITERA],
