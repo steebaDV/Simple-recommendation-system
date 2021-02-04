@@ -183,7 +183,7 @@ class Students:
                     Подходящие_типы_проектов text,
                     Области_деятельности text,
                     Выбранные_проекты text,
-                    Ищет_команду bool)"""
+                    Ищет_команду int)"""
         )
         self.conn.commit()
 
@@ -852,7 +852,7 @@ def submit_input_anketa(button, vk, group, name, surname, email, need_team):
                 group,
                 f'vk.com/{vk}',
                 email,
-                need_team
+                1 if need_team else 0
             ]
             if check_student_in_data(email):
                 db.update_students(student_data, email, 'Анкета')
