@@ -855,13 +855,11 @@ def submit_input_anketa(button, vk, group, name, surname, email, need_team):
                 1 if need_team else 0
             ]
             if check_student_in_data(email):
-                word = '11'
                 db.update_students(student_data, email, 'Анкета')
             else:
-                word = '22'
                 db.insert_students(student_data)
             print(db.get_pandas())
-            return True, False, '#test', word # Я тут
+            return True, False, '#test', 'ДАЛЕЕ'
         else:
             return False, True, '#anketa', 'ПОДТВЕРДИТЬ'
     else:
@@ -1062,7 +1060,7 @@ def get_button_search_enabled(button1, button2):
     if button1 == 'ДАЛЕЕ' == button2:
         return False
     else:
-        return False  #Я тут
+        return True
 
 
 @app.callback(
@@ -1082,7 +1080,6 @@ def get_search_table(button, email):
         ]
         data = db.get_pandas()
 
-        return dbc.Table.from_dataframe(data, striped=True, bordered=True, hover=True)
         student_data = data.loc[email]
         data = data.dropna()
 
