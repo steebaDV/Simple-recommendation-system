@@ -1074,31 +1074,25 @@ def get_button_search_enabled(button1, button2):
 def get_search_table(button, email):
     changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
     if 'button_search' in changed_id:
-        last_column = html.Div(
-            [
-                html.P(
-                    [
-                        html.Span(
-                            "Баллы совместимости",
-                            id="tooltip-target",
-                            style={"textDecoration": "underline", "cursor": "pointer", 'font-family': font_family},
-                        ),
-                    ]
-                ),
-                dbc.Tooltip(
-                    [
-                        html.P(
-                            'За совпадение группы/потока/института даётся по 1-му баллу, т.е. если человек из твоей группы, то ему присуждается +3 балла'),
-                        html.Br(),
-                        html.P(
-                            'За каждое совпадение слов в колонках "Области деятельности" и "Подходящие типы проектов" присуждается по 1 баллу'),
-                        html.Br(),
-                        html.P('За совпадение каждого номера в столбце "Выбранные проекты" присуждается по 3 балла'),
-                    ],
-                    target="tooltip-target", placement='left', style={'text-align': 'left'}
-                ),
-            ]
-        )
+        last_column = [
+            html.Label(
+                "Баллы совместимости",
+                id="tooltip-target",
+                style={"textDecoration": "underline", "cursor": "pointer", 'font-family': font_family},
+            ),
+            dbc.Tooltip(
+                [
+                    html.P(
+                        'За совпадение группы/потока/института даётся по 1-му баллу, т.е. если человек из твоей группы, то ему присуждается +3 балла'),
+                    html.Br(),
+                    html.P(
+                        'За каждое совпадение слов в колонках "Области деятельности" и "Подходящие типы проектов" присуждается по 1 баллу'),
+                    html.Br(),
+                    html.P('За совпадение каждого номера в столбце "Выбранные проекты" присуждается по 3 балла'),
+                ],
+                target="tooltip-target", placement='left', style={'text-align': 'left', 'font-family': font_family}
+            ),
+        ]
 
         columns = [
             *student_columns,
@@ -1193,10 +1187,10 @@ def get_search_table(button, email):
                            ),
                        ]
                        ), bordered=True, responsive=True
+
         )
         return table
     return None
-
 
 application = app.server
 if not testing:
