@@ -1081,7 +1081,7 @@ def get_search_table(button, email):
                         html.Span(
                             "Баллы совместимости",
                             id="tooltip-target",
-                            style={"textDecoration": "underline", "cursor": "pointer"},
+                            style={"textDecoration": "underline", "cursor": "pointer", 'font-family': font_family},
                         ),
                     ]
                 ),
@@ -1091,7 +1091,7 @@ def get_search_table(button, email):
 За каждое совпадение слов в колонках "Области деятельности" и "Подходящие типы проектов" присуждается по 1 баллу\n\n
 
 За совпадение каждого номера в столбце "Выбранные проекты" присуждается по 3 балла""",
-                    target="tooltip-target", style={'font-family': font_family}, placement='left'
+                    target="tooltip-target", placement='left'
                 ),
             ]
         )
