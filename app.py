@@ -97,14 +97,7 @@ def build_delete_button():
                         [
                             dbc.Input(id="email-delete", value="", placeholder='Например: ivanov.ia@edu.spbstu.ru'),
                             dbc.FormText(
-                                "Введите почту человека для того, чтобы удалить его из базы данных. Можно вести сразу несколько почт через пробел"),
-                            dbc.FormFeedback(
-                                id='email-delete-valid', valid=False
-                            ),
-                            dbc.FormFeedback(
-                                id='email-delete-invalid',
-                                valid=False,
-                            ),
+                                id='email-delete-text'),
                         ], style={'width': '75%'}
                     )
 
@@ -232,9 +225,9 @@ class Students:
         cur.execute("""SELECT * FROM students""")
         return cur.fetchall()
 
-    def delete_student(self, email):
+    def delete_student(self, emails):
         cur = self.conn.cursor()
-        cur.execute(f"""DELETE FROM students WHERE Почта in ({('%s, ' * len(email))[:-2]})""", tuple(email))
+        cur.execute(f"""DELETE FROM students WHERE Почта in ({('%s, ' * len(email))[:-2]})""", tuple(emails))
         self.conn.commit()
 
     def get_pandas(self):
@@ -769,28 +762,26 @@ def get_email_input_is_correct(input):
 
 @app.callback(
 
-    [
-        Output("email-delete-valid", 'valid'),
-        Output("email-delete-invalid", 'valid'),
-        Output("email-delete-valid", 'children'),
-        Output("email-delete-invalid", 'children'),
-    ],
+    Output("email-delete-text", 'children'),
     [
         Input('email-delete', 'value'),
         Input('email-delete-button', 'n-clicks')
     ]
 )
-def get_email_input_is_correct(input, button):
+def get_email_delete(input, button):
     changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
-    if 'email-delete-button' in changed_id:
-        email = input.split()
-        prev = len(db.get_students())
-        db.delete_student(email)
-        now = len(db.get_students())
-        if prev != now:
-            return True, False, f'Успешно удалена(ы) {prev-now} строка(и)', ''
-        else:
-            return False, True, '', 'Данные не изменились'
+    if input:
+        if 'email-delete-button' in changed_id:
+            emails = input.split()
+            prev = len(db.get_students())
+            db.delete_student(emails)
+            now = len(db.get_students())
+            if prev != now:
+                return f'Успешно удалена(ы) {prev - now} строка(и)'
+            else:
+                return 'Данные не изменились'
+    else:
+        return 'Введите почту человека для того, чтобы удалить его из базы данных. Можно вести сразу несколько почт через пробел'
 
 
 @app.callback(
