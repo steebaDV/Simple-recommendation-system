@@ -4,3 +4,4 @@ venv
 .env
 .idea
 db.py
+students.xlsx

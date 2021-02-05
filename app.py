@@ -1074,9 +1074,33 @@ def get_button_search_enabled(button1, button2):
 def get_search_table(button, email):
     changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
     if 'button_search' in changed_id:
+        last_column = html.Div(
+            [
+                html.P(
+                    [
+                        html.Span(
+                            "Баллы совместимости",
+                            id="tooltip-target",
+                            style={"textDecoration": "underline", "cursor": "pointer"},
+                        ),
+                    ]
+                ),
+                dbc.Tooltip(
+                    html.Ul(
+                        [
+                            html.Li('За совпадение группы/потока/института даётся по 1-му баллу, т.е. если человек из твоей группы, то ему присуждается +3 балла'),
+                            html.Li('За каждое совпадение слов в колонках "Области деятельности" и "Подходящие типы проектов" присуждается по 1 баллу'),
+                            html.Li('За совпадение каждого номера в столбце "Выбранные проекты" присуждается по 3 балла')
+                        ]
+                    ),
+                    target="tooltip-target",
+                ),
+            ]
+        )
+
         columns = [
             *student_columns,
-            'Баллы совместимости'
+            last_column
         ]
         data = db.get_pandas()
 
