@@ -1121,7 +1121,8 @@ def get_search_table(button, email):
                                [
                                    html.Tr(
                                        [
-                                           html.Th(column, style={'width': f'{width_iter[col]}%', }) for col, column in
+                                           html.Th(html.Label(column) if col != len(columns) - 1 else column,
+                                                   style={'width': f'{width_iter[col]}%', }) for col, column in
                                            enumerate(columns)
                                        ], style={'fontWeight': 'bold', 'text-align': 'center'}
                                    )
@@ -1191,6 +1192,7 @@ def get_search_table(button, email):
         )
         return table
     return None
+
 
 application = app.server
 if not testing:
