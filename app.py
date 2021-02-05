@@ -765,10 +765,10 @@ def get_email_input_is_correct(input):
     Output("email-delete-text", 'children'),
     [
         Input('email-delete', 'value'),
-        Input('email-delete-button', 'n-clicks')
+        Input('email-delete-button', 'n_clicks')
     ]
 )
-def get_email_delete(input, button):
+def email_delete(input, button):
     changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
     if input:
         if 'email-delete-button' in changed_id:
@@ -780,8 +780,7 @@ def get_email_delete(input, button):
                 return f'Успешно удалена(ы) {prev - now} строка(и)'
             else:
                 return 'Данные не изменились'
-    else:
-        return 'Введите почту человека для того, чтобы удалить его из базы данных. Можно вести сразу несколько почт через пробел'
+    return 'Введите почту человека для того, чтобы удалить его из базы данных. Можно вести сразу несколько почт через пробел'
 
 
 @app.callback(
@@ -890,7 +889,6 @@ def submit_input_anketa(button, vk, group, name, surname, email, need_team):
                 db.update_students(student_data, email, 'Анкета')
             else:
                 db.insert_students(student_data)
-            print(db.get_pandas())
             return True, False, '#test', 'ДАЛЕЕ'
         else:
             return False, True, '#anketa', 'ПОДТВЕРДИТЬ'
