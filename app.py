@@ -546,7 +546,7 @@ test = dbc.Container(
                     dbc.Row(
                         dbc.Col(
                             html.H6(
-                                'Выберите области деятельности, в которых вы разбираетесть и/или хотели бы видеть в своей команде:',
+                                'Выберите интересующие вас области деятельности',
                                 style={'color': 'SteelBlue', 'fontWeight': 'bold', 'margin-bottom': '1rem'}
                             ),
                         )
