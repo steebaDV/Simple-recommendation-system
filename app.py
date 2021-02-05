@@ -86,37 +86,47 @@ def get_top_students(data, student_data):
     return top_list
 
 
-def build_download_button():
-    import os
-    print(db.get_pandas())
-    data = db.get_pandas()
-    print(data)
-    if os.path.isfile('assets/files/students.xlsx'):
-        os.remove('assets/files/students.xlsx')
-    data.to_excel('assets/files/students.xlsx', index=False, encoding='cp1251')
-    print(pd.read_excel('assets/files/students.xlsx'))
+def build_delete_button():
+    children = html.Div(
+        [
+            dbc.FormGroup(
+                [
+                    dbc.Label("Почта", html_for='email-del', width=2,
+                              style={'fontWeight': 500}),
+                    dbc.Row(
+                        [
+                            dbc.Input(id="email-delete", value="", placeholder='Например: ivanov.ia@edu.spbstu.ru'),
+                            dbc.FormText(
+                                "Введите почту человека для того, чтобы удалить его из базы данных. Можно вести сразу несколько почт через пробел"),
+                            dbc.FormFeedback(
+                                id='email-delete-valid', valid=False
+                            ),
+                            dbc.FormFeedback(
+                                id='email-delete-invalid',
+                                valid=False,
+                            ),
+                        ], style={'width': '75%'}
+                    )
 
-    button = html.Div(
-        html.Form(
-            action='/assets/files/students.xlsx',
-            method="get",
-            children=[
-                dbc.Button(
-                    type="submit",
-                    children=[
-                        "Скачать данные со студентами"
-                    ]
-                )
-            ]
-        ), style={
-            'text-align': 'center',
-            'display': 'flex',
-            'align-items': 'center',
-            'justify-content': 'center',
-            'height': '100%',
-            'width': '100%'}
+                ], row=True
+            ),
+            dbc.Button(
+                children=['УДАЛИТЬ'],
+                id='email-delete-button',
+                # type='button',
+                className='btn btn-outline-success',
+                style={'margin-top': '0.5rem',
+                       'width': '20%',
+                       'fontWeight': 500,
+                       'position': 'relative',
+                       'left': '40%',
+                       # 'type':'button',
+                       },
+                outline=True,
+            )
+        ]
     )
-    return button
+    return children
 
 
 def check_student_in_data(email):
@@ -221,6 +231,11 @@ class Students:
         cur = self.conn.cursor()
         cur.execute("""SELECT * FROM students""")
         return cur.fetchall()
+
+    def delete_student(self, email):
+        cur = self.conn.cursor()
+        cur.execute("""DELETE FROM students WHERE Почта IN %s""", tuple(email))
+        self.conn.commit()
 
     def get_pandas(self):
         data_ = pd.DataFrame(data=self.get_students(), columns=student_columns)
@@ -754,6 +769,32 @@ def get_email_input_is_correct(input):
 
 @app.callback(
 
+    [
+        Output("email-delete-valid", 'valid'),
+        Output("email-delete-invalid", 'valid'),
+        Output("email-delete-valid", 'children'),
+        Output("email-delete-invalid", 'children'),
+    ],
+    [
+        Input('email-delete', 'value'),
+        Input('email-delete-button', 'n-clicks')
+    ]
+)
+def get_email_input_is_correct(input, button):
+    changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
+    if 'email-delete-button' in changed_id:
+        email = input.split()
+        prev = len(db.get_students())
+        db.delete_student(email)
+        now = len(db.get_students())
+        if prev != now:
+            return True, False, f'Успешно удалена(ы) {prev-now} строка(и)', ''
+        else:
+            return False, True, '', 'Данные не изменились'
+
+
+@app.callback(
+
     Output("description", 'children'),
     [
         Input('name-input', 'value'),
@@ -761,8 +802,8 @@ def get_email_input_is_correct(input):
     ]
 )
 def get_description(name, surname):
-    if name == 'download' and surname == 'data':
-        return build_download_button()
+    if name == 'delete' and surname == 'data':
+        return build_delete_button()
     else:
         children = [
             html.Div(
@@ -980,7 +1021,8 @@ def get_test_table(checkboxes):
                                html.Thead(
                                    html.Tr(
                                        [
-                                           html.Th(html.Label(column), style={'width': f'{width_iter[col]}%', }) for col, column in
+                                           html.Th(html.Label(column), style={'width': f'{width_iter[col]}%', }) for
+                                           col, column in
                                            enumerate(columns)
                                        ], style={'fontWeight': 'bold', 'text-align': 'center', 'height': '3rem'}
                                    )
