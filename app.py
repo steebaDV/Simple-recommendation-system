@@ -227,7 +227,7 @@ class Students:
 
     def delete_student(self, emails):
         cur = self.conn.cursor()
-        cur.execute(f"""DELETE FROM students WHERE Почта in ({('%s, ' * len(email))[:-2]})""", tuple(emails))
+        cur.execute(f"""DELETE FROM students WHERE Почта in ({('%s, ' * len(emails))[:-2]})""", tuple(emails))
         self.conn.commit()
 
     def get_pandas(self):
