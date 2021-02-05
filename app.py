@@ -980,7 +980,7 @@ def get_test_table(checkboxes):
                                html.Thead(
                                    html.Tr(
                                        [
-                                           html.Th(column, style={'width': f'{width_iter[col]}%', }) for col, column in
+                                           html.Th(html.Label(column), style={'width': f'{width_iter[col]}%', }) for col, column in
                                            enumerate(columns)
                                        ], style={'fontWeight': 'bold', 'text-align': 'center', 'height': '3rem'}
                                    )
