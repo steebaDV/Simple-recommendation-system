@@ -697,7 +697,7 @@ app.layout = html.Div(
     ], style={
         'font-family': font_family,
         'width': '100%',
-        'min-width': 1500,
+        'min-width': 1400,
         'background-color': '#edeef0',
     }
 
