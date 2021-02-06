@@ -14,7 +14,7 @@ import os
 
 TOKEN = 'e393732f809fa35d80b21c68f99ac76812f7c21e3639ab43eac20ad8a76f5d78aacd04d04df42e7bfe1c1'
 font_family = 'Arial'
-testing = False
+testing = True
 
 
 def debug(email):
@@ -169,7 +169,16 @@ student_columns = [
 class Students:
     def __init__(self, db):
         self.db = db
-        self.conn = psycopg2.connect(self.db, sslmode='require')
+        if testing:
+            self.conn = psycopg2.connect(
+                host='ec2-3-215-118-246.compute-1.amazonaws.com',
+                database='d77c6005aqh73b',
+                user='pxgialejndroog',
+                password='acb9eb0b8021f95adc00b5f301d7da9af1e271f928657c2e9de398de8490551f',
+                port="5432",
+            )
+        else:
+            self.conn = psycopg2.connect(self.db, sslmode='require')
         self.create_students()
 
     def create_students(self):
@@ -240,14 +249,20 @@ class Students:
 
 
 df = pd.read_excel('opd.xlsx')
-
-DATABASE_URL = os.environ['DATABASE_URL']
+if testing:
+    DATABASE_URL = ''
+else:
+    DATABASE_URL = os.environ['DATABASE_URL']
 
 db = Students(DATABASE_URL)
 
 app = dash.Dash(__name__,
                 external_stylesheets=[LITERA],
-                title="Тест по ОПД")
+                title="Тест по ОПД",
+                meta_tags=[
+                    {"name": "viewport", "content": "width=device-width, initial-scale=1"},
+                ],
+                )
 
 name = dbc.FormGroup(
     [
