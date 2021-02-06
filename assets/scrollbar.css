@@ -1,5 +1,5 @@
 #search_table::-webkit-scrollbar {
-  width: 5px;
+  width: 1vw;
   background-color: #f9f9fd;
 }
 
@@ -16,7 +16,7 @@
 
 
 #test_table::-webkit-scrollbar {
-  width: 5px;
+  width: 1vw;
   background-color: #f9f9fd;
 }
 

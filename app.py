@@ -765,7 +765,7 @@ def get_description(name, surname):
     выбрать понравившихся кандидатов из списка и написать им, используя их ссылки в VK или почту
     """
                     )
-                ], style={'line-height': 25, 'padding-top': '1rem'}
+                ], className='list4b'
             )
         ]
         return children
