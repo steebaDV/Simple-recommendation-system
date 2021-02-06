@@ -260,7 +260,7 @@ app = dash.Dash(__name__,
                 external_stylesheets=[LITERA],
                 title="Тест по ОПД",
                 meta_tags=[
-                    {"name": "viewport", "content": "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"},
+                    {"name": "viewport", "content": "width=device-width, initial-scale=1.0, maximum-scale=1.0"},
                 ],
                 )
 
