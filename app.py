@@ -506,7 +506,7 @@ test = dbc.Container(
                                     value=[],
                                     labelStyle={
                                         'display': 'block',
-                                        'font-size': 12,
+                                        'font-size': 11,
                                         'text-align': 'left',
                                         'fontWeight': 500,
                                     }
