@@ -14,7 +14,7 @@ import os
 
 TOKEN = 'e393732f809fa35d80b21c68f99ac76812f7c21e3639ab43eac20ad8a76f5d78aacd04d04df42e7bfe1c1'
 font_family = 'Arial'
-testing = True
+testing = False
 
 
 def debug(email):
