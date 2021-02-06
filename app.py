@@ -14,7 +14,7 @@ import os
 
 TOKEN = 'e393732f809fa35d80b21c68f99ac76812f7c21e3639ab43eac20ad8a76f5d78aacd04d04df42e7bfe1c1'
 font_family = 'Arial'
-testing = False
+testing = True
 
 
 def debug(email):
@@ -485,79 +485,6 @@ test = dbc.Container(
         dbc.Card(
             dbc.CardBody(
                 [
-                    # html.Div(
-                    #     dbc.Table(
-                    #         html.Table(className='notable', style={'width': '100%', 'height': '80%'}, children=
-                    #         html.Tbody(
-                    #             [
-                    #                 html.Tr(
-                    #                     [
-                    #                         html.Td(
-                    #                             html.H6(
-                    #                                 'Выберите компетенции, в которых вы разбираетесть и/или хотели бы видеть в своей команде:',
-                    #                                 style={'color': 'SteelBlue', 'fontWeight': 'bold',
-                    #                                        'margin-bottom': '1rem'}
-                    #                             ),
-                    #                             colSpan=3
-                    #                         )
-                    #                     ], style={'height': '1rem'}
-                    #                 ),
-                    #                 html.Tr(
-                    #                     [
-                    #                         html.Td(
-                    #                             dcc.Checklist(
-                    #                                 id='checkboxes',
-                    #                                 options=[
-                    #                                     {'label': f' {get_filter_label(filter)}', 'value': filter} for
-                    #                                     filter in
-                    #                                     filter_list
-                    #                                 ],
-                    #                                 value=[],
-                    #                                 labelStyle={
-                    #                                     'display': 'block',
-                    #                                     'font-size': 10,
-                    #                                     'text-align': 'left',
-                    #                                     'fontWeight': 500
-                    #                                 },
-                    #
-                    #                             ),
-                    #                             rowSpan=2),
-                    #                         html.Td(
-                    #                             html.Div(id='test_table',
-                    #                                      style={
-                    #                                          'width': '100%',
-                    #                                          'height': '100%',
-                    #                                          'overflow': 'auto',
-                    #                                          'margin-bottom': '.5rem',
-                    #                                          # 'border': '3px solid green',
-                    #                                      }
-                    #                                      ), colSpan=2
-                    #                         ),
-                    #                     ], style={'height': '60%'}
-                    #                 ),
-                    #                 html.Tr(
-                    #                     [
-                    #                         html.Td(
-                    #                             html.H4(id='top_types_title',
-                    #                                     style={'fontWeight': 'bold',
-                    #                                            'text-align': 'left'}
-                    #                                     )
-                    #                         ),
-                    #                         html.Td(
-                    #                             html.H6(id='top_types',
-                    #                                     style={'color': 'SteelBlue',
-                    #                                            'text-align': 'left'}
-                    #                                     )
-                    #                         ),
-                    #                     ], style={'height': '15%', 'top': '0.5rem'}
-                    #                 ),
-                    #
-                    #             ]
-                    #         ),
-                    #                    ), bordered=True
-                    #     ), style={'height': '70%', 'width': '100%'}
-                    # )
-
                     dbc.Row(
                         dbc.Col(
                             html.H6(
@@ -582,7 +509,6 @@ test = dbc.Container(
                                         'font-size': 12,
                                         'text-align': 'left',
                                         'fontWeight': 500,
-                                        'line-height': 16
                                     }
 
                                 )], width=2),
@@ -591,7 +517,7 @@ test = dbc.Container(
                                     html.Div(id='test_table',
                                              style={
                                                  'width': '100%',
-                                                 'height': '70%',
+                                                 'height': '75%',
                                                  'overflow': 'auto',
                                                  'margin-bottom': '.5rem',
                                                  # 'border': '3px solid green',
@@ -615,7 +541,7 @@ test = dbc.Container(
 
                                                 ], style={}
                                             ),
-                                        ], style={'width': '98%', 'height': '15%'}
+                                        ], style={'width': '98%', 'height': '20%'}
                                     )
 
                                 ], style={'height': '100%'}
@@ -623,7 +549,7 @@ test = dbc.Container(
                         ], style={'height': '100%'}
                     )
                 ]
-            ), style={'height': '40rem', 'border-radius': 15}
+            ), style={'height': '42rem', 'border-radius': 15}
         ),
         html.Div(
             html.A(
