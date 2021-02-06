@@ -260,7 +260,7 @@ app = dash.Dash(__name__,
                 external_stylesheets=[LITERA],
                 title="Тест по ОПД",
                 meta_tags=[
-                    {"name": "viewport", "content": "width=device-width, initial-scale=1"},
+                    {"name": "viewport", "content": "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"},
                 ],
                 )
 
@@ -696,8 +696,10 @@ app.layout = html.Div(
         search
     ], style={
         'font-family': font_family,
-        # 'font-weight': 500,
-        'background-color': '#edeef0'}
+        'width': '100%',
+        'min-width': 1500,
+        'background-color': '#edeef0',
+    }
 
 )
 
