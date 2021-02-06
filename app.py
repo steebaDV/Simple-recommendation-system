@@ -509,7 +509,7 @@ test = dbc.Container(
                                         'font-size': 14,
                                         'text-align': 'left',
                                         'fontWeight': 500,
-                                        'line-height': 15
+                                        'line-height': 14
                                     }
 
                                 )], width=2),
