@@ -170,13 +170,7 @@ class Students:
     def __init__(self, db):
         self.db = db
         if testing:
-            self.conn = psycopg2.connect(
-                host='ec2-3-215-118-246.compute-1.amazonaws.com',
-                database='d77c6005aqh73b',
-                user='pxgialejndroog',
-                password='acb9eb0b8021f95adc00b5f301d7da9af1e271f928657c2e9de398de8490551f',
-                port="5432",
-            )
+            pass
         else:
             self.conn = psycopg2.connect(self.db, sslmode='require')
         self.create_students()
