@@ -12,7 +12,8 @@ import requests
 import psycopg2
 import os
 
-TOKEN = 'e393732f809fa35d80b21c68f99ac76812f7c21e3639ab43eac20ad8a76f5d78aacd04d04df42e7bfe1c1'
+TOKEN = '22db5c0022db5c0022db5c009322ad48e5222db22db5c0042d604c00dfe9e5fccfe8136'
+
 font_family = 'Arial'
 testing = False
 
