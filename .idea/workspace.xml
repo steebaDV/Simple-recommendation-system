@@ -17,7 +17,7 @@
       <change afterPath="$PROJECT_DIR$/../Вычмат/.idea/Вычмат.iml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../Курсач/.idea/Курсач.iml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../МФТИ/.idea/МФТИ.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -183,7 +183,7 @@
       <workItem from="1614403377686" duration="419000" />
       <workItem from="1623165863820" duration="609000" />
       <workItem from="1623597942541" duration="28000" />
-      <workItem from="1625789958155" duration="3625000" />
+      <workItem from="1625789958155" duration="4560000" />
     </task>
     <servers />
   </component>
