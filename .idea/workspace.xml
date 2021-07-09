@@ -2,6 +2,22 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1e7ead1e-28ce-4d8f-8d2f-35165f8ab15f" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/../.idea/Python37-32.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Coursera/.idea/Coursera.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Coursera/week2/.idea/week2.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Coursera/week3/.idea/week3.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Crap/.idea/Crap.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../QR/qr1_github/.idea/qr1_github.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../QR/qr_full/.idea/qr_full.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../QR/test/.idea/test.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../bot/mybot/.idea/mybot.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../fb_API/.idea/fb_API.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../game4Kate/.idea/game4Kate.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../test_django2/.idea/test_django.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Вычмат/.idea/Вычмат.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Курсач/.idea/Курсач.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../МФТИ/.idea/МФТИ.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -12,9 +28,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Python Script" />
         <option value="JavaScript File" />
         <option value="CSS File" />
+        <option value="Python Script" />
       </list>
     </option>
   </component>
@@ -32,7 +48,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../opd" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../racom-dash/expert" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -156,6 +172,19 @@
       <workItem from="1612023642846" duration="42514000" />
       <workItem from="1612168994105" duration="11000" />
       <workItem from="1612338613190" duration="41800000" />
+      <workItem from="1612866990391" duration="2823000" />
+      <workItem from="1613039733916" duration="74000" />
+      <workItem from="1613061541353" duration="611000" />
+      <workItem from="1613118865743" duration="1821000" />
+      <workItem from="1613201673947" duration="3625000" />
+      <workItem from="1613381594943" duration="7758000" />
+      <workItem from="1613766846634" duration="1500000" />
+      <workItem from="1613769799651" duration="9000" />
+      <workItem from="1613847170610" duration="4214000" />
+      <workItem from="1614403377686" duration="419000" />
+      <workItem from="1623165863820" duration="609000" />
+      <workItem from="1623597942541" duration="28000" />
+      <workItem from="1625789958155" duration="2836000" />
     </task>
     <servers />
   </component>
@@ -163,59 +192,35 @@
     <option name="version" value="2" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="532" y="214" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1612484759365">
+    <state x="499" y="159" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1625790123805">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="532" y="214" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1536.824@0.0.1536.824" timestamp="1612484759365" />
-    <state x="499" y="159" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1612121874584">
+    <state x="499" y="159" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1536.824@0.0.1536.824" timestamp="1625790123805" />
+    <state x="549" y="167" key="FileChooserDialogImpl" timestamp="1625790315760">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="499" y="159" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1536.824@0.0.1536.824" timestamp="1612121874584" />
-    <state x="549" y="167" key="FileChooserDialogImpl" timestamp="1612024525544">
+    <state x="549" y="167" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1625790315760" />
+    <state width="1493" height="323" key="GridCell.Tab.0.bottom" timestamp="1625849951933">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="549" y="167" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1612024525544" />
-    <state width="1493" height="261" key="GridCell.Tab.0.bottom" timestamp="1612786128051">
+    <state width="1493" height="323" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1625849951933" />
+    <state width="1493" height="323" key="GridCell.Tab.0.center" timestamp="1625849951933">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="261" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1612786128051" />
-    <state width="1493" height="261" key="GridCell.Tab.0.center" timestamp="1612786128051">
+    <state width="1493" height="323" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1625849951933" />
+    <state width="1493" height="323" key="GridCell.Tab.0.left" timestamp="1625849951933">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="261" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1612786128051" />
-    <state width="1493" height="261" key="GridCell.Tab.0.left" timestamp="1612786128051">
+    <state width="1493" height="323" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1625849951933" />
+    <state width="1493" height="323" key="GridCell.Tab.0.right" timestamp="1625849951933">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="261" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1612786128051" />
-    <state width="1493" height="261" key="GridCell.Tab.0.right" timestamp="1612786128051">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state width="1493" height="261" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1612786128051" />
-    <state width="1493" height="261" key="GridCell.Tab.1.bottom" timestamp="1612786128052">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state width="1493" height="261" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1612786128052" />
-    <state width="1493" height="261" key="GridCell.Tab.1.center" timestamp="1612786128051">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state width="1493" height="261" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1612786128051" />
-    <state width="1493" height="261" key="GridCell.Tab.1.left" timestamp="1612786128051">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state width="1493" height="261" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1612786128051" />
-    <state width="1493" height="261" key="GridCell.Tab.1.right" timestamp="1612786128052">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state width="1493" height="261" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1612786128052" />
-    <state x="425" y="66" width="670" height="676" key="search.everywhere.popup" timestamp="1612460974593">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state x="425" y="66" width="670" height="676" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1612460974593" />
+    <state width="1493" height="323" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1625849951933" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Test_Heroku$students.coverage" NAME="students Coverage Results" MODIFIED="1612092126361" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Test_Heroku$ex.coverage" NAME="ex Coverage Results" MODIFIED="1612119510527" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/Test_Heroku$db.coverage" NAME="db Coverage Results" MODIFIED="1612867039392" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/Test_Heroku$app.coverage" NAME="app Coverage Results" MODIFIED="1612643122229" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Test_Heroku$db.coverage" NAME="db Coverage Results" MODIFIED="1625849893117" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Test_Heroku$app.coverage" NAME="app Coverage Results" MODIFIED="1625849889645" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

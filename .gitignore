@@ -3,5 +3,5 @@ venv
 .DS_Store
 .env
 .idea
-db.py
 students.xlsx
+__pycache__

@@ -195,7 +195,6 @@ class Students:
 
     def insert_students(self, row):
         cur = self.conn.cursor()
-        # cur.execute(f"""INSERT INTO students VALUES (%s, %s, %s, %s, %s, %s, NULL, NULL, NULL, %s)""", row)
         cur.execute(
             f"""INSERT INTO students VALUES (%s, %s, %s, %s, %s, %s, NULL, NULL, NULL, %s)""", row)
         self.conn.commit()
@@ -917,9 +916,6 @@ def submit_input_test(button, input, email, checkboxes):
         db.update_students(student_data, email, mode='Тест')
         return '#search', 'ДАЛЕЕ'
     else:
-        # id_labels = ''
-        # if email and check_student_in_data(email):
-        #     id_labels = get_student_data(email)[8]
         return '#test', 'ПОДТВЕРДИТЬ'
 
 
